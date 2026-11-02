@@ -92,6 +92,16 @@ for ev in data["events"]:
     except Exception as e:
         print("schedule failed:", e)
 
+# test ping requested from the chat
+if data.pop("test_ping", None):
+    try:
+        urllib.request.urlopen(urllib.request.Request(
+            f"https://ntfy.sh/{topic}?{urllib.parse.urlencode({'title': 'Prueba de Karos', 'tags': 'white_check_mark', 'priority': '5'})}",
+            data="Si ves esto, los avisos funcionan.".encode(), method="POST"), timeout=30)
+        print("test ping sent")
+    except Exception as e:
+        print("test ping failed:", e)
+
 # 3. Isla Flotante: schedule each slot in the next 4 hours, 10 minutes ahead
 done = set(data.get("isla_sent", []))
 nowdt = datetime.now(CL)
