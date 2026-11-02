@@ -18,11 +18,16 @@ BOSSES = {
     "slobreath": ("Slobreath", "Berneo", 83, 97),
     "frezzard": ("Frezzard", "Berneo", 293, 307),
     "osobuho": ("Oso Búho", "Berneo", 300, 300),
+    "haditas": ("Haditas", "Otros", 150, 150),
 }
+ISLA = ["13:50", "16:50", "19:50", "22:50", "01:50"]
+
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+CL = ZoneInfo("America/Santiago")
 
 def hm(ms):
-    t = time.gmtime(ms / 1000 - 3 * 3600)  # Chile, UTC-3
-    return f"{t.tm_hour:02d}:{t.tm_min:02d}"
+    return datetime.fromtimestamp(ms / 1000, CL).strftime("%H:%M")
 
 data = json.load(open("data.json", encoding="utf-8"))
 before = json.dumps(data, sort_keys=True)
@@ -86,6 +91,31 @@ for ev in data["events"]:
         print("scheduled", name, ev["ch"], win)
     except Exception as e:
         print("schedule failed:", e)
+
+# 3. Isla Flotante: schedule each slot in the next 4 hours, 10 minutes ahead
+done = set(data.get("isla_sent", []))
+nowdt = datetime.now(CL)
+for d in (0, 1):
+    day = (nowdt + timedelta(days=d)).date()
+    for s_ in ISLA:
+        H, M = map(int, s_.split(":"))
+        slot = datetime(day.year, day.month, day.day, H, M, tzinfo=CL)
+        key = slot.strftime("%Y-%m-%d %H:%M")
+        if key in done or not (nowdt < slot <= nowdt + timedelta(hours=4)):
+            continue
+        when = slot - timedelta(minutes=10)
+        q = {"title": "Isla Flotante en 10 min", "tags": "island", "priority": "5"}
+        if (when - nowdt).total_seconds() > 15:
+            q["at"] = str(int(when.timestamp()))
+        req = urllib.request.Request(f"https://ntfy.sh/{topic}?{urllib.parse.urlencode(q)}",
+                                     data=f"Abre a las {s_}.".encode(), method="POST")
+        try:
+            urllib.request.urlopen(req, timeout=30)
+            done.add(key)
+            print("isla scheduled", key)
+        except Exception as e:
+            print("isla schedule failed:", e)
+data["isla_sent"] = sorted(done)[-20:]
 
 if json.dumps(data, sort_keys=True) != before:
     json.dump(data, open("data.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)

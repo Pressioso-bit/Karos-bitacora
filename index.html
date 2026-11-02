@@ -136,6 +136,16 @@ input[type=time]{width:120px}
 .btn{font-family:var(--ui);font-weight:600;font-size:15px;border:1px solid var(--line);background:var(--sunk);color:var(--fg);border-radius:10px;padding:9px 12px;cursor:pointer}
 .btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
 .ok-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-right:6px}
+.isla{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:10px}
+.isla h2{margin:0;font-family:var(--display);font-weight:600;font-size:26px;line-height:1;color:var(--accent)}
+.islahead{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.islanext{display:grid;justify-items:end;text-align:right}
+.islanext b{font-family:var(--ui);font-weight:700;font-size:24px}
+.islanext small{color:var(--muted);font-size:12px}
+.islanext.soon b{color:var(--warn)} .islanext.open b{color:var(--ok)}
+.islaslots{display:flex;flex-wrap:wrap;gap:6px}
+.islaslots span{font-family:var(--ui);font-weight:600;font-size:15px;padding:4px 10px;border-radius:999px;background:var(--sunk);color:var(--muted)}
+.islaslots span.cur{background:var(--accent);color:#fff}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:999px;font-family:var(--ui);font-weight:600;z-index:30}
 @media (max-width:380px){.row{grid-template-columns:minmax(0,1fr) 80px 80px}.cell .t{font-size:17px}}
 @media (prefers-reduced-motion:no-preference){.cell.open,.cell.alive{animation:pulse 2s ease-in-out infinite}@keyframes pulse{50%{filter:brightness(1.08)}}}
@@ -160,6 +170,7 @@ input[type=time]{width:120px}
 
   <main id="view-b">
     <div class="next"><span class="label">Lo que viene</span><div class="nextrow" id="nextrow"></div></div>
+    <section class="isla" id="isla"></section>
     <div id="maps"></div>
     <div class="legend">
       <span><i style="background:var(--warn)"></i>Faltan &lt;10 min</span>
@@ -200,7 +211,9 @@ const MAPS=[
  {id:'berneo',name:'Berneo',c:'var(--dusk)',bosses:[
   {id:'slobreath',name:'Slobreath',tag:'Normal',min:83,max:97},
   {id:'frezzard',name:'Frezzard',tag:'Especial',min:293,max:307},
-  {id:'osobuho',name:'Oso Búho',tag:'Evento',min:300,max:300}]}
+  {id:'osobuho',name:'Oso Búho',tag:'Evento',min:300,max:300}]},
+ {id:'otros',name:'Otros',c:'var(--accent)',bosses:[
+  {id:'haditas',name:'Haditas',tag:'Cada 2h30',min:150,max:150}]}
 ];
 const BOSS={};MAPS.forEach(m=>m.bosses.forEach(b=>BOSS[b.id]={...b,map:m}));
 const ALERT_MIN=5, MIN=60000;
@@ -304,7 +317,14 @@ function cellHTML(bossId,ch,now){
   if(st.state==='alive'){t='VIVO';s='desde '+hm(st.since)}
   return `<button class="cell ${st.state}" data-b="${bossId}" data-ch="${ch}"><span class="ch">Canal ${ch}</span><span class="t">${t}</span><span class="s">${s}</span></button>`;
 }
-function renderBosses(){
+const ISLA=['13:50','16:50','19:50','22:50','01:50'];
+function islaNext(now){const out=[];for(let d=-1;d<=1;d++)ISLA.forEach(s=>{const [H,M]=s.split(':').map(Number);const t=new Date(now);t.setDate(t.getDate()+d);t.setHours(H,M,0,0);out.push(t.getTime())});return out.filter(t=>t>now-15*MIN).sort((a,b)=>a-b)}
+function renderIsla(){const now=Date.now();const n=islaNext(now);const t=n[0];const open=t<=now;
+  $('#isla').innerHTML=`<div class="islahead"><div><span class="tag">Evento diario · hora Chile</span><h2>Isla Flotante</h2></div>
+   <div class="islanext ${open?'open':t-now<=10*MIN?'soon':''}"><b>${open?'¡Abierta!':dur(t-now)}</b><small>${open?'desde '+hm(t):'a las '+hm(t)}</small></div></div>
+   <div class="islaslots">${ISLA.map(s=>`<span class="${s===hm(t)?'cur':''}">${s}</span>`).join('')}</div>
+   <p class="note" style="margin:0">Niveles 21–30, 31–40, 41–50 y 51–60.</p>`}
+function renderBosses(){renderIsla();
   const now=Date.now();
   $('#maps').innerHTML=MAPS.map(m=>`<section class="map" style="--c:${m.c}">
     <div class="maphead"><h2>${m.name}</h2><span class="label">canal 1 · canal 2</span></div>
