@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Karos Bitácora</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Karos">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0d0f1a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@600;800&family=Barlow+Semi+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Layout: one-column phone app — sticky header with tabs, map-grouped boss rows (canal 1 | canal 2 cells), bottom sheet for logging. Map colors come from the three posters: ice, ember, dusk. */
+:root{
+  --bg:#eef1f6; --surface:#ffffff; --sunk:#e3e8f0; --line:#cfd6e2;
+  --fg:#16192a; --muted:#5d6580; --accent:#3a3fb8;
+  --ice:#1f7fc4; --ember:#c8521a; --dusk:#7b3fb3;
+  --ok:#1d8a55; --warn:#b77a06; --hot:#c52f3c;
+  --display:"Grenze Gotisch", "Palatino Linotype", Georgia, serif;
+  --ui:"Barlow Semi Condensed", "Arial Narrow", system-ui, sans-serif;
+  --body:"Barlow", system-ui, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d0f1a; --surface:#161a29; --sunk:#1d2234; --line:#2b3249;
+  --fg:#e9ecf7; --muted:#8f97b3; --accent:#8d92ff;
+  --ice:#5db8f2; --ember:#ff8a4c; --dusk:#b98af0;
+  --ok:#45c987; --warn:#f2b63c; --hot:#ff6470; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d0f1a; --surface:#161a29; --sunk:#1d2234; --line:#2b3249;
+  --fg:#e9ecf7; --muted:#8f97b3; --accent:#8d92ff;
+  --ice:#5db8f2; --ember:#ff8a4c; --dusk:#b98af0;
+  --ok:#45c987; --warn:#f2b63c; --hot:#ff6470; color-scheme:dark}
+
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;-webkit-tap-highlight-color:transparent;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.4;font-variant-numeric:tabular-nums}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:12px 8px;display:grid;gap:10px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.brand h1{margin:0;font-family:var(--display);font-weight:800;font-size:34px;letter-spacing:.5px;line-height:1}
+.brand h1 span{font-size:15px;font-family:var(--ui);font-weight:600;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-left:6px}
+.clock{font-family:var(--ui);font-weight:600;font-size:22px}
+.tabs{display:flex;gap:6px}
+.tabs button,.chip{font-family:var(--ui);font-weight:600;font-size:15px;letter-spacing:.04em;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:7px 14px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.tools{margin-left:auto;display:flex;gap:6px}
+.chip.on{border-color:var(--accent);color:var(--accent)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.banner{margin-top:12px;border-radius:12px;padding:12px 14px;background:var(--hot);color:#fff;font-family:var(--ui);font-weight:600;font-size:17px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.banner button{background:rgba(255,255,255,.2);border:0;color:#fff;border-radius:8px;padding:6px 10px;font:inherit;font-size:14px;cursor:pointer}
+
+.next{display:grid;gap:8px;margin-top:16px}
+.label{font-family:var(--ui);font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.nextrow{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px}
+.pill{flex:0 0 auto;border-radius:12px;padding:8px 12px;background:var(--surface);border:1px solid var(--line);display:grid;gap:2px;min-width:132px;cursor:pointer;text-align:left;color:var(--fg);font:inherit}
+.pill b{font-family:var(--ui);font-size:20px;font-weight:700}
+.pill small{color:var(--muted);font-size:12px}
+
+section.map{margin-top:22px;display:grid;gap:8px}
+.maphead{display:flex;align-items:baseline;gap:10px;padding-left:10px;border-left:4px solid var(--c)}
+.maphead h2{margin:0;font-family:var(--display);font-weight:600;font-size:26px;color:var(--c);line-height:1}
+.maphead .label{margin-left:auto}
+.row{display:grid;grid-template-columns:minmax(0,1fr) 92px 92px;gap:6px;align-items:stretch}
+.bname{background:var(--surface);border-radius:10px;padding:8px 10px;display:grid;align-content:center;gap:1px;min-width:0}
+.bname strong{font-family:var(--ui);font-weight:600;font-size:16px;line-height:1.15}
+.bname small{color:var(--muted);font-size:12px}
+.tag{font-family:var(--ui);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--c);font-weight:700}
+.cell{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:6px 6px;display:grid;align-content:center;justify-items:center;gap:0;cursor:pointer;color:var(--fg);font:inherit;min-height:58px}
+.cell .ch{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-family:var(--ui);font-weight:600}
+.cell .t{font-family:var(--ui);font-weight:700;font-size:19px;line-height:1.1}
+.cell .s{font-size:11px;color:var(--muted)}
+.cell.wait{border-color:var(--line)}
+.cell.soon{border-color:var(--warn);background:color-mix(in srgb,var(--warn) 12%,var(--surface))}
+.cell.soon .t{color:var(--warn)}
+.cell.open{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,var(--surface))}
+.cell.open .t{color:var(--ok)}
+.cell.late .t{color:var(--muted)}
+.cell.alive{border-color:var(--hot);background:color-mix(in srgb,var(--hot) 12%,var(--surface))}
+.cell.alive .t{color:var(--hot)}
+.cell.none .t{color:var(--muted);font-weight:500}
+.legend{display:flex;flex-wrap:wrap;gap:10px 14px;margin-top:22px;font-size:12px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+
+/* sheet */
+.scrim{position:fixed;inset:0;background:rgba(5,7,15,.55);z-index:20}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--surface);border-radius:18px 18px 0 0;max-height:86vh;overflow:auto;padding-block:16px calc(18px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.sheet-in{max-width:560px;margin:0 auto;display:grid;gap:14px}
+.sheet h3{margin:0;font-family:var(--display);font-size:28px;font-weight:600;color:var(--c);line-height:1}
+.seg{display:flex;gap:6px}
+.seg button{flex:1;font-family:var(--ui);font-weight:600;font-size:16px;padding:9px;border-radius:10px;border:1px solid var(--line);background:var(--sunk);color:var(--fg);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.timebox{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+input,select{font:inherit;font-size:16px;color:var(--fg);background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:9px 10px;min-width:0}
+input[type=time]{width:120px}
+.nudge{display:flex;gap:4px}
+.nudge button{font-family:var(--ui);font-size:14px;padding:8px 9px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.big{font-family:var(--ui);font-weight:700;font-size:18px;letter-spacing:.03em;padding:14px;border-radius:12px;border:0;cursor:pointer}
+.big.spawn{background:var(--hot);color:#fff}
+.big.kill{background:var(--fg);color:var(--bg)}
+.calc{background:var(--sunk);border-radius:12px;padding:10px 12px;font-size:14px}
+.calc b{font-family:var(--ui);font-size:17px}
+.hist{display:grid;gap:4px}
+.hist .h{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
+.del{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:8px;padding:4px 9px;font:inherit;font-size:12px;cursor:pointer}
+.del.arm{border-color:var(--hot);color:var(--hot)}
+.close{justify-self:start;background:transparent;border:0;color:var(--muted);font:inherit;cursor:pointer;padding:4px 0}
+
+/* prices */
+.pform{margin-top:16px;background:var(--surface);border-radius:14px;padding:14px;display:grid;gap:10px}
+.pform .rowf{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:8px}
+.pform button{font-family:var(--ui);font-weight:700;font-size:17px;border:0;border-radius:10px;padding:11px;background:var(--accent);color:#fff;cursor:pointer}
+.items{margin-top:18px;display:grid;gap:8px}
+.item{display:grid;grid-template-columns:minmax(0,1fr) 84px auto;gap:10px;align-items:center;background:var(--surface);border-radius:12px;padding:10px 12px;cursor:pointer;border:1px solid transparent;color:var(--fg);font:inherit;text-align:left;width:100%}
+.item strong{font-family:var(--ui);font-weight:600;font-size:17px;display:block;overflow-wrap:anywhere}
+.item small{color:var(--muted);font-size:12px}
+.price{font-family:var(--ui);font-weight:700;font-size:18px;text-align:right}
+.delta{font-size:12px;display:block;text-align:right;font-weight:600}
+.up{color:var(--ok)} .down{color:var(--hot)} .flat{color:var(--muted)}
+.empty{margin-top:18px;border:1px dashed var(--line);border-radius:14px;padding:22px 16px;color:var(--muted);text-align:center}
+.chart{width:100%;height:auto;display:block}
+.note{font-size:12px;color:var(--muted)}
+.steps{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14px}
+.topic{display:flex;gap:8px}
+.topic input{flex:1;font-family:ui-monospace,Menlo,monospace;font-size:14px}
+.btn{font-family:var(--ui);font-weight:600;font-size:15px;border:1px solid var(--line);background:var(--sunk);color:var(--fg);border-radius:10px;padding:9px 12px;cursor:pointer}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.ok-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-right:6px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:999px;font-family:var(--ui);font-weight:600;z-index:30}
+@media (max-width:380px){.row{grid-template-columns:minmax(0,1fr) 80px 80px}.cell .t{font-size:17px}}
+@media (prefers-reduced-motion:no-preference){.cell.open,.cell.alive{animation:pulse 2s ease-in-out infinite}@keyframes pulse{50%{filter:brightness(1.08)}}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><h1>Karos<span>bitácora</span></h1><div class="clock" id="clock">--:--</div></div>
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tab-b" aria-selected="true">Bosses</button>
+      <button role="tab" id="tab-p" aria-selected="false">Precios</button>
+      <div class="tools">
+        <button class="chip" id="snd" title="Configurar notificaciones">🔔 Avisos</button>
+        <button class="chip" id="wake" title="Mantener la pantalla encendida">☀︎</button>
+      </div>
+    </div>
+  </header>
+
+  <div id="banner"></div>
+
+  <main id="view-b">
+    <div class="next"><span class="label">Lo que viene</span><div class="nextrow" id="nextrow"></div></div>
+    <div id="maps"></div>
+    <div class="legend">
+      <span><i style="background:var(--warn)"></i>Faltan &lt;10 min</span>
+      <span><i style="background:var(--ok)"></i>En ventana</span>
+      <span><i style="background:var(--hot)"></i>Vivo, sin matar</span>
+      <span><i style="background:var(--line)"></i>Ventana pasada</span>
+    </div>
+    <p class="note" style="margin-top:10px">Tiempos de reaparición contados desde la muerte. Toca un canal para anotar cuándo salió o murió.</p>
+  </main>
+
+  <main id="view-p" hidden>
+    <form class="pform" id="pform">
+      <span class="label">Anotar precio</span>
+      <div class="rowf">
+        <input id="pitem" list="itemlist" placeholder="Objeto" autocomplete="off" required>
+        <input id="pprice" inputmode="numeric" placeholder="Precio" required>
+      </div>
+      <datalist id="itemlist"></datalist>
+      <button type="submit">Guardar precio</button>
+    </form>
+    <div id="items"></div>
+  </main>
+</div>
+
+<div id="sheetroot"></div>
+<div id="toastroot"></div>
+
+<script>
+const MAPS=[
+ {id:'tempteroon',name:'Tempteroon',c:'var(--ice)',bosses:[
+  {id:'reina',name:'Reina de las Nieves',tag:'Normal',min:83,max:97},
+  {id:'neoreina',name:'Neo Reina de las Nieves',tag:'Neo',min:833,max:847},
+  {id:'barbaro',name:'Bárbaro',tag:'Evento',min:300,max:300}]},
+ {id:'lupinel',name:'Lupinel',c:'var(--ember)',bosses:[
+  {id:'volcano',name:'Volcano',tag:'Normal',min:83,max:97},
+  {id:'neovolcano',name:'Neo Volcano',tag:'Neo',min:833,max:847},
+  {id:'sneekie',name:'Sneekie',tag:'Evento',min:300,max:300}]},
+ {id:'berneo',name:'Berneo',c:'var(--dusk)',bosses:[
+  {id:'slobreath',name:'Slobreath',tag:'Normal',min:83,max:97},
+  {id:'frezzard',name:'Frezzard',tag:'Especial',min:293,max:307},
+  {id:'osobuho',name:'Oso Búho',tag:'Evento',min:300,max:300}]}
+];
+const BOSS={};MAPS.forEach(m=>m.bosses.forEach(b=>BOSS[b.id]={...b,map:m}));
+const ALERT_MIN=5, MIN=60000;
+let events=[], prices=[], store=null, soundOn=false, audio=null, wakeLock=null;
+const fired=new Set();
+const $=s=>document.querySelector(s);
+const pad=n=>String(n).padStart(2,'0');
+const hm=t=>{const d=new Date(t);return pad(d.getHours())+':'+pad(d.getMinutes())};
+const dayhm=t=>{const d=new Date(t),n=new Date();const same=d.toDateString()===n.toDateString();return (same?'hoy ':d.getDate()+'/'+(d.getMonth()+1)+' ')+hm(t)};
+const dur=ms=>{const s=Math.max(0,Math.round(ms/1000));const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return h?`${h}h ${pad(m)}m`:`${m}:${pad(x)}`};
+const fmt=n=>Number(n).toLocaleString('es-CL');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- storage: this phone ---------- */
+const local={
+  read(k,d){try{const v=localStorage.getItem('karos-'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  write(k,v){try{localStorage.setItem('karos-'+k,JSON.stringify(v))}catch(e){}}
+};
+const uid=()=>'l'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+/* Shared record lives in data.json (Claude edits it from the chat). Taps on this phone are kept
+   as pending here and sent to the sync channel; the repo's sync job merges them into data.json. */
+let remote=local.read('remote',{events:[],prices:[]});
+let pend=local.read('pend',{events:[],prices:[]});
+let hidden=new Set(local.read('hidden',[]));
+let topic=local.read('topic','karos-6b186cd3ab');
+function compose(){
+  ['events','prices'].forEach(col=>{
+    const ids=new Set((remote[col]||[]).map(x=>x.id));
+    pend[col]=pend[col].filter(x=>!ids.has(x.id));
+    const all=[...(remote[col]||[]),...pend[col]].filter(x=>!hidden.has(x.id));
+    if(col==='events')events=all;else prices=all;
+  });
+  local.write('pend',pend);
+}
+async function syncPost(payload){
+  try{await fetch('https://ntfy.sh/'+encodeURIComponent(topic+'-sync'),{method:'POST',body:JSON.stringify(payload)})}catch(e){}
+}
+async function add(col,data){
+  const doc={id:uid(),...data,src:'app'};pend[col].push(doc);compose();renderAll();syncPost({t:'add',col,doc});
+}
+async function remove(col,id){
+  hidden.add(id);local.write('hidden',[...hidden].slice(-500));compose();renderAll();syncPost({t:'del',col,id});
+}
+async function loadRemote(){
+  try{const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const d=await r.json();
+    remote={events:d.events||[],prices:d.prices||[]};if(d.topic){topic=d.topic;local.write('topic',topic)}
+    (d.deleted||[]).forEach(id=>hidden.add(id));local.write('remote',remote);compose();renderAll();
+  }catch(e){}
+}
+function boot(){
+  compose();renderAll();loadRemote();setInterval(loadRemote,60000);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)loadRemote()});
+}
+
+/* ---------- notifications through ntfy ---------- */
+async function ntfy(msg,title,atMs){
+  const q=new URLSearchParams({title,tags:'crossed_swords',priority:'5'});
+  if(atMs&&atMs-Date.now()>15000)q.set('at',String(Math.floor(atMs/1000)));
+  const r=await fetch('https://ntfy.sh/'+encodeURIComponent(topic)+'?'+q,{method:'POST',body:msg});
+  if(!r.ok)throw new Error('ntfy '+r.status);
+}
+async function scheduleFor(bossId,ch,killAt){
+  const b=BOSS[bossId];const start=killAt+b.min*MIN,end=killAt+b.max*MIN;
+  const when=start-ALERT_MIN*MIN;if(end<Date.now())return false;
+  const win=b.min===b.max?hm(start):hm(start)+' – '+hm(end);
+  await ntfy(`${b.map.name} · canal ${ch}. Ventana ${win}.`,`${b.name} sale en ${ALERT_MIN} min`,when);
+  return true;
+}
+function openAvisos(){
+  $('#sheetroot').innerHTML=`<div class="scrim" id="scrim"></div><div class="sheet" role="dialog" aria-label="Avisos"><div class="sheet-in">
+   <h3 style="color:var(--accent)">Avisos al celular</h3>
+   <p style="margin:0;font-size:14px">Cuando marcas que un boss <b>murió</b>, la app programa una notificación ${ALERT_MIN} minutos antes de que vuelva a salir. Llega aunque tengas la app cerrada y el celular en silencio.</p>
+   <ol class="steps"><li>Instala <b>ntfy</b> desde la App Store (es gratis).</li><li>En ntfy toca <b>+</b>, pega este canal y suscríbete:</li></ol>
+   <div class="topic"><input id="topicin" value="${esc(topic)}" readonly><button class="btn" id="copytopic">Copiar</button></div>
+   <ol class="steps" start="3"><li>Permite las notificaciones de ntfy cuando te lo pida.</li><li>Toca <b>Probar</b> para confirmar que te llega.</li></ol>
+   <button class="btn pri" id="testntfy">Probar notificación</button>
+   <p class="note">Si borras una muerte, el aviso que ya se programó igual llega.</p>
+   <button class="close" id="sclose">Cerrar</button></div></div>`;
+  avisosOpen=true;
+}
+let avisosOpen=false;
+$('#snd').onclick=openAvisos;
+
+/* ---------- timer logic ---------- */
+function status(bossId,ch,now){
+  const b=BOSS[bossId];
+  const ev=events.filter(e=>e.boss===bossId&&e.ch===ch).sort((a,b)=>a.at-b.at);
+  const last=ev[ev.length-1];
+  if(!last)return{state:'none'};
+  if(last.kind==='spawn')return{state:'alive',since:last.at,last};
+  const start=last.at+b.min*MIN,end=last.at+b.max*MIN;
+  if(now<start)return{state:start-now<=10*MIN?'soon':'wait',start,end,last};
+  if(now<=end)return{state:'open',start,end,last};
+  return{state:'late',start,end,last};
+}
+function cellHTML(bossId,ch,now){
+  const st=status(bossId,ch,now);let t='—',s='sin datos';
+  if(st.state==='wait'||st.state==='soon'){t=dur(st.start-now);s='sale '+hm(st.start)}
+  if(st.state==='open'){t='¡YA!';s='hasta '+hm(st.end)}
+  if(st.state==='late'){t='pasó';s='debió salir '+hm(st.start)}
+  if(st.state==='alive'){t='VIVO';s='desde '+hm(st.since)}
+  return `<button class="cell ${st.state}" data-b="${bossId}" data-ch="${ch}"><span class="ch">Canal ${ch}</span><span class="t">${t}</span><span class="s">${s}</span></button>`;
+}
+function renderBosses(){
+  const now=Date.now();
+  $('#maps').innerHTML=MAPS.map(m=>`<section class="map" style="--c:${m.c}">
+    <div class="maphead"><h2>${m.name}</h2><span class="label">canal 1 · canal 2</span></div>
+    ${m.bosses.map(b=>`<div class="row"><div class="bname"><span class="tag">${b.tag}</span><strong>${b.name}</strong><small>${b.min===b.max?'cada '+b.min/60+' h':fmtWin(b)}</small></div>${cellHTML(b.id,1,now)}${cellHTML(b.id,2,now)}</div>`).join('')}
+  </section>`).join('');
+  const up=[];MAPS.forEach(m=>m.bosses.forEach(b=>[1,2].forEach(ch=>{const st=status(b.id,ch,now);if(st.state==='wait'||st.state==='soon'||st.state==='open')up.push({b,ch,st,m})})));
+  up.sort((a,b)=>a.st.start-b.st.start);
+  $('#nextrow').innerHTML=up.length?up.slice(0,6).map(u=>`<button class="pill" data-b="${u.b.id}" data-ch="${u.ch}" style="border-color:${u.m.c}"><small>${u.b.name} · c${u.ch}</small><b>${u.st.state==='open'?'en ventana':dur(u.st.start-now)}</b><small>${hm(u.st.start)}–${hm(u.st.end)}</small></button>`).join(''):'<span class="note">Anota una muerte y aquí verás la cuenta regresiva.</span>';
+}
+const fmtWin=b=>{const f=x=>Math.floor(x/60)+'h'+pad(x%60);return f(b.min)+' – '+f(b.max)};
+
+/* ---------- alerts while open ---------- */
+function checkAlerts(){
+  const now=Date.now();const hits=[];
+  MAPS.forEach(m=>m.bosses.forEach(b=>[1,2].forEach(ch=>{const st=status(b.id,ch,now);if(!st.start)return;
+    const key=st.last.id+'|'+ch;const lead=st.start-now;
+    if(lead<=ALERT_MIN*MIN&&now<=st.end){hits.push(`${b.name} c${ch} ${lead>0?'en '+dur(lead):'en ventana'}`)}})));
+  $('#banner').innerHTML=hits.length?`<div class="banner"><span>⚔ ${esc(hits.join(' · '))}</span></div>`:'';
+}
+$('#wake').onclick=async()=>{try{if(wakeLock){await wakeLock.release();wakeLock=null;$('#wake').classList.remove('on');toast('Pantalla normal');return}wakeLock=await navigator.wakeLock.request('screen');$('#wake').classList.add('on');toast('Pantalla siempre encendida');wakeLock.addEventListener('release',()=>{wakeLock=null;$('#wake').classList.remove('on')})}catch(e){toast('Este navegador no permite mantener la pantalla')}};
+
+/* ---------- sheet ---------- */
+let sheet=null;
+function openSheet(bossId,ch){sheet={boss:bossId,ch,time:hm(Date.now()),armed:null};drawSheet()}
+function closeSheet(){sheet=null;$('#sheetroot').innerHTML=''}
+function drawSheet(){
+  if(!sheet)return;const b=BOSS[sheet.boss];const now=Date.now();const st=status(b.id,sheet.ch,now);
+  const hist=events.filter(e=>e.boss===b.id&&e.ch===sheet.ch).sort((a,c)=>c.at-a.at).slice(0,12);
+  let calc='Sin registros en este canal todavía.';
+  if(st.state==='alive')calc=`Salió a las <b>${hm(st.since)}</b>. Marca cuándo muere para calcular la próxima.`;
+  else if(st.start)calc=`Murió ${dayhm(st.last.at)} → próxima <b>${hm(st.start)}${st.end!==st.start?' – '+hm(st.end):''}</b>`;
+  $('#sheetroot').innerHTML=`<div class="scrim" id="scrim"></div><div class="sheet" role="dialog" aria-label="${esc(b.name)}" style="--c:${b.map.c}"><div class="sheet-in">
+   <div><span class="tag">${b.map.name} · ${b.tag}</span><h3>${b.name}</h3></div>
+   <div class="seg">${[1,2].map(c=>`<button data-sch="${c}" aria-pressed="${c===sheet.ch}">Canal ${c}</button>`).join('')}</div>
+   <div class="calc">${calc}</div>
+   <div class="timebox"><label class="label" for="stime">Hora</label><input type="time" id="stime" value="${sheet.time}">
+     <div class="nudge"><button data-n="0">ahora</button><button data-n="-1">−1</button><button data-n="-3">−3</button><button data-n="-5">−5</button></div></div>
+   <div class="acts"><button class="big spawn" id="aspawn">Salió</button><button class="big kill" id="akill">Murió</button></div>
+   ${hist.length?`<div class="hist"><span class="label">Historial canal ${sheet.ch}</span>${hist.map(e=>`<div class="h"><span>${e.kind==='kill'?'☠ murió':'✦ salió'} · ${dayhm(e.at)}</span><button class="del ${sheet.armed===e.id?'arm':''}" data-del="${e.id}">${sheet.armed===e.id?'¿Borrar?':'✕'}</button></div>`).join('')}</div>`:''}
+   <button class="close" id="sclose">Cerrar</button></div></div>`;
+}
+function sheetTime(){const v=$('#stime').value||hm(Date.now());const [h,m]=v.split(':').map(Number);const d=new Date();d.setHours(h,m,0,0);if(d.getTime()-Date.now()>5*MIN)d.setDate(d.getDate()-1);return d.getTime()}
+document.addEventListener('click',async e=>{
+  const c=e.target.closest('[data-b]');if(c){openSheet(c.dataset.b,+c.dataset.ch);return}
+  if(avisosOpen){
+    if(e.target.id==='scrim'||e.target.id==='sclose'){avisosOpen=false;$('#sheetroot').innerHTML='';return}
+    if(e.target.id==='copytopic'){const i=$('#topicin');try{await navigator.clipboard.writeText(topic);toast('Canal copiado')}catch(err){i.focus();i.select();toast('Mantén presionado para copiar')}return}
+    if(e.target.id==='testntfy'){try{await ntfy('Si ves esto, los avisos de Karos funcionan.','Prueba de Karos');toast('Enviada. Revisa ntfy.')}catch(err){toast('No se pudo enviar. Revisa tu conexión.')}return}
+    return}
+  if(!sheet)return;
+  if(e.target.id==='scrim'||e.target.id==='sclose'){closeSheet();return}
+  const sc=e.target.closest('[data-sch]');if(sc){sheet.ch=+sc.dataset.sch;sheet.armed=null;drawSheet();return}
+  const n=e.target.closest('[data-n]');if(n){sheet.time=hm(Date.now()+(+n.dataset.n)*MIN);$('#stime').value=sheet.time;return}
+  if(e.target.id==='aspawn'||e.target.id==='akill'){const kind=e.target.id==='akill'?'kill':'spawn';const at=sheetTime();const b=BOSS[sheet.boss];
+    const ch=sheet.ch,boss=sheet.boss;closeSheet();
+    let notified=false,msg=`${b.name} c${ch}: ${kind==='kill'?'murió':'salió'} ${hm(at)}`;
+    if(kind==='kill'){try{notified=await scheduleFor(boss,ch,at);if(notified)msg=`Aviso programado para ${hm(at+b.min*MIN-ALERT_MIN*MIN)}`}catch(err){msg='Guardado. El aviso se programará en unos minutos.'}}
+    await add('events',{boss,map:b.map.id,ch,kind,at,notified});toast(msg);
+    return}
+  const d=e.target.closest('[data-del]');if(d){const id=d.dataset.del;if(sheet.armed===id){try{await remove('events',id);sheet.armed=null}catch(err){toast('No se pudo borrar')}}else sheet.armed=id;drawSheet()}
+});
+document.addEventListener('input',e=>{if(e.target.id==='stime'&&sheet)sheet.time=e.target.value});
+
+/* ---------- prices ---------- */
+let openItem=null,armedPrice=null;
+function groups(){const g={};prices.forEach(p=>{(g[p.item]=g[p.item]||[]).push(p)});Object.values(g).forEach(a=>a.sort((x,y)=>x.at-y.at));return g}
+function spark(arr,w,h){if(arr.length<2)return'';const v=arr.map(p=>p.price),lo=Math.min(...v),hi=Math.max(...v),r=hi-lo||1;
+  const pts=arr.map((p,i)=>[i/(arr.length-1)*(w-4)+2,h-3-(p.price-lo)/r*(h-6)]);const last=pts[pts.length-1];
+  const col=v[v.length-1]>=v[0]?'var(--ok)':'var(--hot)';
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><path d="M${pts.map(p=>p.join(',')).join('L')}" fill="none" stroke="${col}" stroke-width="2" stroke-linejoin="round"/><circle cx="${last[0]}" cy="${last[1]}" r="3" fill="${col}"/></svg>`}
+function bigChart(arr){
+  const W=520,H=220,L=58,R=14,T=14,B=30;if(arr.length<2)return'<p class="note">Con dos precios o más aparece el gráfico.</p>';
+  const v=arr.map(p=>p.price),lo=Math.min(...v),hi=Math.max(...v);const span=hi-lo||Math.max(1,hi*.1);const y0=lo-span*.1,y1=hi+span*.1;
+  const t0=arr[0].at,t1=arr[arr.length-1].at,ts=t1-t0||1;
+  const X=t=>L+(t-t0)/ts*(W-L-R),Y=p=>T+(1-(p-y0)/(y1-y0))*(H-T-B);
+  const ticks=[0,1,2,3].map(i=>y0+(y1-y0)*i/3);
+  const line=arr.map(p=>`${X(p.at).toFixed(1)},${Y(p.price).toFixed(1)}`).join(' L');
+  const area=`M${X(t0)},${H-B} L${line} L${X(t1)},${H-B} Z`;
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Historial de precio">
+   ${ticks.map(t=>`<line x1="${L}" x2="${W-R}" y1="${Y(t)}" y2="${Y(t)}" stroke="var(--line)" stroke-width="1"/><text x="${L-8}" y="${Y(t)+4}" text-anchor="end" font-size="12" fill="var(--muted)" font-family="Barlow Semi Condensed, sans-serif">${fmt(Math.round(t))}</text>`).join('')}
+   <path d="${area}" fill="var(--accent)" opacity=".12"/>
+   <path d="M${line}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>
+   ${arr.map(p=>`<circle cx="${X(p.at)}" cy="${Y(p.price)}" r="3.5" fill="var(--accent)"/>`).join('')}
+   <text x="${L}" y="${H-8}" font-size="12" fill="var(--muted)" font-family="Barlow Semi Condensed, sans-serif">${dayhm(t0)}</text>
+   <text x="${W-R}" y="${H-8}" text-anchor="end" font-size="12" fill="var(--muted)" font-family="Barlow Semi Condensed, sans-serif">${dayhm(t1)}</text></svg>`}
+function renderPrices(){
+  const g=groups();const names=Object.keys(g).sort((a,b)=>g[b][g[b].length-1].at-g[a][g[a].length-1].at);
+  $('#itemlist').innerHTML=names.map(n=>`<option value="${esc(n)}">`).join('');
+  if(!names.length){$('#items').innerHTML='<div class="empty"><strong style="font-family:var(--ui);font-size:17px;color:var(--fg)">Todavía no hay precios</strong><br>Anota lo que cuesta un objeto en el mercado. Cada vez que lo vuelvas a ver, anótalo de nuevo y verás cómo sube o baja.</div>';return}
+  $('#items').innerHTML='<div class="items">'+names.map(n=>{const a=g[n],last=a[a.length-1],prev=a[a.length-2];
+    let d='<span class="delta flat">1 registro</span>';
+    if(prev){const pc=(last.price-prev.price)/(prev.price||1)*100;d=`<span class="delta ${pc>0?'up':pc<0?'down':'flat'}">${pc>0?'▲':pc<0?'▼':'='} ${Math.abs(pc).toFixed(1)}%</span>`}
+    const open=openItem===n;
+    return `<div><button class="item" data-item="${esc(n)}" aria-expanded="${open}"><span><strong>${esc(n)}</strong><small>${dayhm(last.at)} · ${a.length} precios</small></span>${spark(a,84,32)||'<span></span>'}<span><span class="price">${fmt(last.price)}</span>${d}</span></button>
+     ${open?`<div style="background:var(--surface);border-radius:0 0 12px 12px;padding:4px 12px 12px;margin-top:-6px;display:grid;gap:8px">${bigChart(a)}
+       <div class="note">Mín ${fmt(Math.min(...a.map(x=>x.price)))} · Máx ${fmt(Math.max(...a.map(x=>x.price)))} · Prom ${fmt(Math.round(a.reduce((s,x)=>s+x.price,0)/a.length))}</div>
+       <div class="hist">${a.slice().reverse().map(p=>`<div class="h"><span>${fmt(p.price)} · ${dayhm(p.at)}</span><button class="del ${armedPrice===p.id?'arm':''}" data-pdel="${p.id}">${armedPrice===p.id?'¿Borrar?':'✕'}</button></div>`).join('')}</div></div>`:''}</div>`}).join('')+'</div>';
+}
+$('#pform').addEventListener('submit',async e=>{e.preventDefault();const item=$('#pitem').value.trim();const price=Number(String($('#pprice').value).replace(/[.\s]/g,'').replace(',','.'));
+  if(!item||!isFinite(price)||price<=0){toast('Escribe un objeto y un precio en números');return}
+  try{await add('prices',{item,price,at:Date.now()});$('#pprice').value='';openItem=item;toast(`${item}: ${fmt(price)}`)}catch(err){toast('No se pudo guardar el precio')}});
+document.addEventListener('click',async e=>{const it=e.target.closest('[data-item]');if(it){openItem=openItem===it.dataset.item?null:it.dataset.item;armedPrice=null;renderPrices();return}
+  const pd=e.target.closest('[data-pdel]');if(pd){const id=pd.dataset.pdel;if(armedPrice===id){try{await remove('prices',id)}catch(err){toast('No se pudo borrar')}armedPrice=null}else armedPrice=id;renderPrices()}});
+
+/* ---------- tabs, clock, toast ---------- */
+function setTab(p){const isP=p==='precios';$('#view-b').hidden=isP;$('#view-p').hidden=!isP;$('#tab-b').setAttribute('aria-selected',!isP);$('#tab-p').setAttribute('aria-selected',isP)}
+$('#tab-b').onclick=()=>{location.hash='bosses';setTab('bosses')};$('#tab-p').onclick=()=>{location.hash='precios';setTab('precios')};
+window.addEventListener('hashchange',()=>setTab(location.hash.slice(1)));setTab(location.hash.slice(1));
+let tt;function toast(m){$('#toastroot').innerHTML=`<div class="toast" role="status">${esc(m)}</div>`;clearTimeout(tt);tt=setTimeout(()=>$('#toastroot').innerHTML='',2600)}
+function renderAll(){renderBosses();renderPrices();drawSheet();checkAlerts()}
+function tick(){$('#clock').textContent=new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit',second:'2-digit'});renderBosses();checkAlerts()}
+setInterval(tick,1000);boot();tick();
+</script>
+</body>
+</html>
