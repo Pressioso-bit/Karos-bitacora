@@ -222,11 +222,18 @@
    "notified": true
   }
  ],
- "prices": [],
+ "prices": [
+  {
+   "id": "lmvztaknwiskht",
+   "item": "Guantes 10% V el de ataq",
+   "price": 150,
+   "at": 1793657380892,
+   "src": "app"
+  }
+ ],
  "deleted": [],
  "isla_sent": [
   "2026-11-02 19:50",
   "2026-11-02 22:50"
- ],
- "test_ping": true
+ ]
 }
