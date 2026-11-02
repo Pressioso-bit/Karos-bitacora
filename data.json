@@ -200,6 +200,25 @@
    "src": "claude",
    "est": true,
    "notified": true
+  },
+  {
+   "id": "c-1102-1903s",
+   "boss": "reina",
+   "map": "tempteroon",
+   "ch": 1,
+   "kind": "spawn",
+   "at": 1793656980000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1102-1904k",
+   "boss": "reina",
+   "map": "tempteroon",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793657040000,
+   "src": "claude",
+   "est": true
   }
  ],
  "prices": [],

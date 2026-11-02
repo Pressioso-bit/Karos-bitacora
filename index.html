@@ -84,7 +84,15 @@ section.map{margin-top:22px;display:grid;gap:8px}
 .cell.soon .t{color:var(--warn)}
 .cell.open{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,var(--surface))}
 .cell.open .t{color:var(--ok)}
-.cell.late .t{color:var(--muted)}
+.cell.late .t,.cell.est .t{color:var(--muted)}
+.cell.est{border-style:dashed}
+.recentbox{margin-top:14px}
+.recentbox summary{cursor:pointer;list-style:none}
+.recent{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:2px;background:var(--surface);border-radius:12px;padding-inline:12px}
+.recent li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
+.recent li:last-child{border-bottom:0}
+.recent .spawn{color:var(--hot);font-weight:600}
+.recent .kill{color:var(--muted)}
 .cell.alive{border-color:var(--hot);background:color-mix(in srgb,var(--hot) 12%,var(--surface))}
 .cell.alive .t{color:var(--hot)}
 .cell.none .t{color:var(--muted);font-weight:500}
@@ -170,13 +178,14 @@ input[type=time]{width:120px}
 
   <main id="view-b">
     <div class="next"><span class="label">Lo que viene</span><div class="nextrow" id="nextrow"></div></div>
+    <details class="recentbox" open><summary class="label">Últimas apariciones</summary><ul class="recent" id="recent"></ul></details>
     <section class="isla" id="isla"></section>
     <div id="maps"></div>
     <div class="legend">
       <span><i style="background:var(--warn)"></i>Faltan &lt;10 min</span>
       <span><i style="background:var(--ok)"></i>En ventana</span>
       <span><i style="background:var(--hot)"></i>Vivo, sin matar</span>
-      <span><i style="background:var(--line)"></i>Ventana pasada</span>
+      <span><i style="border:1px dashed var(--muted);background:transparent"></i>Estimado (sin dato nuevo)</span>
     </div>
     <p class="note" style="margin-top:10px">Tiempos de reaparición contados desde la muerte. Toca un canal para anotar cuándo salió o murió.</p>
   </main>
@@ -303,17 +312,23 @@ function status(bossId,ch,now){
   const ev=events.filter(e=>e.boss===bossId&&e.ch===ch).sort((a,b)=>a.at-b.at);
   const last=ev[ev.length-1];
   if(!last)return{state:'none'};
-  if(last.kind==='spawn')return{state:'alive',since:last.at,last};
-  const start=last.at+b.min*MIN,end=last.at+b.max*MIN;
+  // a spawn with no kill yet: assume it dies about a minute later
+  const k=last.kind==='spawn'?last.at+MIN:last.at;
+  if(last.kind==='spawn'&&now<last.at+b.min*MIN)return{state:'alive',since:last.at,last};
+  const start=k+b.min*MIN,end=k+b.max*MIN;
   if(now<start)return{state:start-now<=10*MIN?'soon':'wait',start,end,last};
   if(now<=end)return{state:'open',start,end,last};
-  return{state:'late',start,end,last};
+  // window passed with no new report: project the chain, assuming each one is killed as it appears
+  const avg=(b.min+b.max)/2*MIN,half=(b.max-b.min)/2*MIN;
+  let m=2;while(k+m*avg<now-half*m&&m<60)m++;
+  const mid=k+m*avg;
+  return{state:'est',start:mid-half*m,end:mid+half*m,mid,cycles:m,last};
 }
 function cellHTML(bossId,ch,now){
   const st=status(bossId,ch,now);let t='—',s='sin datos';
   if(st.state==='wait'||st.state==='soon'){t=dur(st.start-now);s='sale '+hm(st.start)}
   if(st.state==='open'){t='¡YA!';s='hasta '+hm(st.end)}
-  if(st.state==='late'){t='pasó';s='debió salir '+hm(st.start)}
+  if(st.state==='est'){t=st.mid>now?'~'+dur(st.mid-now):'~ya';s='aprox '+hm(st.mid)}
   if(st.state==='alive'){t='VIVO';s='desde '+hm(st.since)}
   return `<button class="cell ${st.state}" data-b="${bossId}" data-ch="${ch}"><span class="ch">Canal ${ch}</span><span class="t">${t}</span><span class="s">${s}</span></button>`;
 }
@@ -330,9 +345,11 @@ function renderBosses(){renderIsla();
     <div class="maphead"><h2>${m.name}</h2><span class="label">canal 1 · canal 2</span></div>
     ${m.bosses.map(b=>`<div class="row"><div class="bname"><span class="tag">${b.tag}</span><strong>${b.name}</strong><small>${b.min===b.max?'cada '+b.min/60+' h':fmtWin(b)}</small></div>${cellHTML(b.id,1,now)}${cellHTML(b.id,2,now)}</div>`).join('')}
   </section>`).join('');
-  const up=[];MAPS.forEach(m=>m.bosses.forEach(b=>[1,2].forEach(ch=>{const st=status(b.id,ch,now);if(st.state==='wait'||st.state==='soon'||st.state==='open')up.push({b,ch,st,m})})));
-  up.sort((a,b)=>a.st.start-b.st.start);
-  $('#nextrow').innerHTML=up.length?up.slice(0,6).map(u=>`<button class="pill" data-b="${u.b.id}" data-ch="${u.ch}" style="border-color:${u.m.c}"><small>${u.b.name} · c${u.ch}</small><b>${u.st.state==='open'?'en ventana':dur(u.st.start-now)}</b><small>${hm(u.st.start)}–${hm(u.st.end)}</small></button>`).join(''):'<span class="note">Anota una muerte y aquí verás la cuenta regresiva.</span>';
+  const up=[];MAPS.forEach(m=>m.bosses.forEach(b=>[1,2].forEach(ch=>{const st=status(b.id,ch,now);if(['wait','soon','open','est'].includes(st.state))up.push({b,ch,st,m,key:st.mid||st.start})})));
+  up.sort((a,b)=>a.key-b.key);
+  $('#nextrow').innerHTML=up.length?up.slice(0,6).map(u=>`<button class="pill" data-b="${u.b.id}" data-ch="${u.ch}" style="border-color:${u.m.c}"><small>${u.b.name} · c${u.ch}</small><b>${u.st.state==='open'?'en ventana':u.st.state==='est'?(u.st.mid>now?'~'+dur(u.st.mid-now):'~ahora'):dur(u.st.start-now)}</b><small>${u.st.state==='est'?'estimado ~'+hm(u.st.mid):hm(u.st.start)+'–'+hm(u.st.end)}</small></button>`).join(''):'<span class="note">Anota una muerte y aquí verás la cuenta regresiva.</span>';
+  const rec=events.slice().sort((a,b)=>b.at-a.at).slice(0,8);
+  $('#recent').innerHTML=rec.map(e=>`<li><span>${BOSS[e.boss]?.name||e.boss} · c${e.ch}</span><span class="${e.kind}">${e.kind==='kill'?'murió':'salió'} ${dayhm(e.at)}</span></li>`).join('');
 }
 const fmtWin=b=>{const f=x=>Math.floor(x/60)+'h'+pad(x%60);return f(b.min)+' – '+f(b.max)};
 
