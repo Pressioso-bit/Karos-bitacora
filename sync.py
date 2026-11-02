@@ -92,6 +92,37 @@ for ev in data["events"]:
     except Exception as e:
         print("schedule failed:", e)
 
+# 2b. no new report: assume it was killed on time and keep warning about the next ones (estimated)
+est = set(data.get("est_sent", []))
+last = {}
+for ev in data["events"]:
+    if ev.get("boss") in BOSSES:
+        last[(ev["boss"], ev["ch"])] = ev  # events are sorted by time
+for (boss, ch), ev in last.items():
+    name, mapname, mn, mx = BOSSES[boss]
+    k = ev["at"] + (60000 if ev.get("kind") == "spawn" else 0)
+    avg = (mn + mx) / 2 * 60000
+    for m in range(2, 21):
+        mid = k + m * avg
+        when = mid - ALERT_MIN * 60000
+        if when < now:
+            continue
+        if when > now + 3 * 3600000:
+            break
+        key = f"{boss}|{ch}|{int(k)}|{m}"
+        if key in est:
+            continue
+        q = {"title": f"{name} (estimado) en {ALERT_MIN} min", "tags": "hourglass", "priority": "4", "at": str(int(when / 1000))}
+        body = f"{mapname} · canal {ch}. Aprox {hm(mid)}, sin dato nuevo desde {hm(ev['at'])}."
+        try:
+            urllib.request.urlopen(urllib.request.Request(
+                f"https://ntfy.sh/{topic}?{urllib.parse.urlencode(q)}", data=body.encode(), method="POST"), timeout=30)
+            est.add(key)
+            print("estimated scheduled", name, ch, hm(mid))
+        except Exception as e:
+            print("estimate schedule failed:", e)
+data["est_sent"] = sorted(est)[-300:]
+
 # test ping requested from the chat
 if data.pop("test_ping", None):
     try:
