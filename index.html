@@ -236,7 +236,7 @@ const MAPS=[
   {id:'haditas',name:'Haditas',tag:'Cada 2h30',min:150,max:150}]}
 ];
 const BOSS={};MAPS.forEach(m=>m.bosses.forEach(b=>BOSS[b.id]={...b,map:m}));
-const ALERT_MIN=5, MIN=60000;
+const ALERT_MIN=10, MIN=60000;
 let events=[], prices=[], store=null, soundOn=false, audio=null, wakeLock=null;
 const fired=new Set();
 const $=s=>document.querySelector(s);

@@ -7,7 +7,7 @@ Runs from GitHub Actions:
 """
 import json, time, urllib.request, urllib.parse
 
-ALERT_MIN = 5
+ALERT_MIN = 10
 BOSSES = {
     "reina": ("Reina de las Nieves", "Tempteroon", 83, 97),
     "neoreina": ("Neo Reina de las Nieves", "Tempteroon", 833, 847),
