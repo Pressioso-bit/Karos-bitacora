@@ -328,7 +328,8 @@
    "kind": "kill",
    "at": 1793675040000,
    "src": "claude",
-   "est": true
+   "est": true,
+   "notified": true
   }
  ],
  "prices": [
@@ -385,6 +386,7 @@
   "volcano|2|1793580420000|17",
   "volcano|2|1793580420000|18",
   "volcano|2|1793580420000|19",
+  "volcano|2|1793675040000|2",
   "volcano|2|1793675340000|2"
  ]
 }
