@@ -107,7 +107,7 @@ for (boss, ch), ev in last.items():
         when = mid - ALERT_MIN * 60000
         if when < now:
             continue
-        if when > now + 3 * 3600000:
+        if when > now + 4 * 3600000:
             break
         key = f"{boss}|{ch}|{int(k)}|{m}"
         if key in est:
@@ -142,7 +142,7 @@ for d in (0, 1):
         H, M = map(int, s_.split(":"))
         slot = datetime(day.year, day.month, day.day, H, M, tzinfo=CL)
         key = slot.strftime("%Y-%m-%d %H:%M")
-        if key in done or not (nowdt < slot <= nowdt + timedelta(hours=4)):
+        if key in done or not (nowdt < slot <= nowdt + timedelta(hours=24)):
             continue
         when = slot - timedelta(minutes=10)
         q = {"title": "Isla Flotante en 10 min", "tags": "island", "priority": "5"}
