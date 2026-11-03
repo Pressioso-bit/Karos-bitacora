@@ -359,6 +359,27 @@
    "price": 150,
    "at": 1793657380892,
    "src": "app"
+  },
+  {
+   "id": "cp-1103-calab80",
+   "item": "Calabaza",
+   "price": 80000,
+   "at": 1793726215352,
+   "src": "claude"
+  },
+  {
+   "id": "cp-1103-calab70",
+   "item": "Calabaza",
+   "price": 70000,
+   "at": 1793726335352,
+   "src": "claude"
+  },
+  {
+   "id": "cp-1103-rocaac",
+   "item": "Roca AC (tienda)",
+   "price": 10000,
+   "at": 1793726335352,
+   "src": "claude"
   }
  ],
  "deleted": [],
