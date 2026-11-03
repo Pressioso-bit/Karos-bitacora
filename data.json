@@ -372,6 +372,25 @@
    "notified": true
   },
   {
+   "id": "c-1103-1928s",
+   "boss": "reina",
+   "map": "tempteroon",
+   "ch": 2,
+   "kind": "spawn",
+   "at": 1793744880000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1103-1929k",
+   "boss": "reina",
+   "map": "tempteroon",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793744940000,
+   "src": "claude",
+   "est": true
+  },
+  {
    "id": "c-1103-1941s",
    "boss": "volcano",
    "map": "lupinel",
