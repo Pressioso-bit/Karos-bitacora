@@ -1,0 +1,20 @@
+name: probe
+on: workflow_dispatch
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          T=karos-probe-$RANDOM$RANDOM
+          echo "== publish scheduled with sequence id"
+          curl -s -H "At: 10m" -H "X-Sequence-ID: seqtest" -d "scheduled test" https://ntfy.sh/$T; echo
+          echo "== list scheduled before delete"
+          curl -s "https://ntfy.sh/$T/json?poll=1&sched=1"; echo
+          echo "== delete by sequence id"
+          curl -s -i -X DELETE https://ntfy.sh/$T/seqtest | head -20; echo
+          echo "== list scheduled after delete"
+          curl -s "https://ntfy.sh/$T/json?poll=1&sched=1"; echo
+          echo "== republish same sequence scheduled later"
+          curl -s -H "At: 20m" -H "X-Sequence-ID: seqtest" -d "updated" https://ntfy.sh/$T; echo
+          echo "== list scheduled after republish"
+          curl -s "https://ntfy.sh/$T/json?poll=1&sched=1"; echo
