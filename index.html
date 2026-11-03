@@ -289,17 +289,23 @@ function boot(){
 }
 
 /* ---------- notifications through ntfy ---------- */
-async function ntfy(msg,title,atMs){
+async function ntfy(msg,title,atMs,seq){
   const q=new URLSearchParams({title,tags:'crossed_swords',priority:'5'});
   if(atMs&&atMs-Date.now()>15000)q.set('at',String(Math.floor(atMs/1000)));
-  const r=await fetch('https://ntfy.sh/'+encodeURIComponent(topic)+'?'+q,{method:'POST',body:msg});
+  const url='https://ntfy.sh/'+encodeURIComponent(topic)+'?'+q;
+  let r;
+  try{r=await fetch(url,{method:'POST',body:msg,headers:seq?{'X-Sequence-ID':seq}:{}})}catch(e){r=await fetch(url,{method:'POST',body:msg})}
   if(!r.ok)throw new Error('ntfy '+r.status);
+}
+/* a newer report replaces every pending alert for that boss and channel */
+async function cancelFor(bossId,ch){
+  await Promise.all(Array.from({length:8},(_,i)=>fetch('https://ntfy.sh/'+encodeURIComponent(topic)+'/'+bossId+'-'+ch+'-'+(i+1),{method:'DELETE'}).catch(()=>{})));
 }
 async function scheduleFor(bossId,ch,killAt){
   const b=BOSS[bossId];const start=killAt+b.min*MIN,end=killAt+b.max*MIN;
-  const when=start-ALERT_MIN*MIN;if(end<Date.now())return false;
+  const when=start-ALERT_MIN*MIN;await cancelFor(bossId,ch);if(end<Date.now())return false;
   const win=b.min===b.max?hm(start):hm(start)+' – '+hm(end);
-  await ntfy(`${b.map.name} · canal ${ch}. Ventana ${win}.`,`${b.name} sale en ${ALERT_MIN} min`,when);
+  await ntfy(`${b.map.name} · canal ${ch}. Ventana ${win}.`,`${b.name} sale en ${ALERT_MIN} min`,when,`${bossId}-${ch}-1`);
   return true;
 }
 function openAvisos(){
@@ -416,6 +422,7 @@ document.addEventListener('click',async e=>{
   if(e.target.id==='aspawn'||e.target.id==='akill'){const kind=e.target.id==='akill'?'kill':'spawn';const at=sheetTime();const b=BOSS[sheet.boss];
     const ch=sheet.ch,boss=sheet.boss;closeSheet();
     let notified=false,msg=`${b.name} c${ch}: ${kind==='kill'?'murió':'salió'} ${hm(at)}`;
+    if(kind==='spawn')cancelFor(boss,ch);
     if(kind==='kill'){try{notified=await scheduleFor(boss,ch,at);if(notified)msg=`Aviso programado para ${hm(at+b.min*MIN-ALERT_MIN*MIN)}`}catch(err){msg='Guardado. El aviso se programará en unos minutos.'}}
     await add('events',{boss,map:b.map.id,ch,kind,at,notified});toast(msg);
     return}
