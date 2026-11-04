@@ -332,7 +332,7 @@ function status(bossId,ch,now){
   if(!last)return{state:'none'};
   // a spawn with no kill yet: assume it dies about a minute later
   const k=last.kind==='spawn'?last.at+MIN:last.at;
-  if(last.kind==='spawn'&&now<last.at+b.min*MIN)return{state:'alive',since:last.at,last};
+  // a reported spawn counts as killed about a minute later: go straight to the next window
   // fixed-time bosses: keep the alert up 10 min past the expected time, then drop it
   const start=k+b.min*MIN,end=k+b.max*MIN+(b.min===b.max?10*MIN:0);
   if(now<start)return{state:start-now<=10*MIN?'soon':'wait',start,end,last};
@@ -424,8 +424,7 @@ document.addEventListener('click',async e=>{
   if(e.target.id==='aspawn'||e.target.id==='akill'){const kind=e.target.id==='akill'?'kill':'spawn';const at=sheetTime();const b=BOSS[sheet.boss];
     const ch=sheet.ch,boss=sheet.boss;closeSheet();
     let notified=false,msg=`${b.name} c${ch}: ${kind==='kill'?'murió':'salió'} ${hm(at)}`;
-    if(kind==='spawn')cancelFor(boss,ch);
-    if(kind==='kill'){try{notified=await scheduleFor(boss,ch,at);if(notified)msg=`Aviso programado para ${hm(at+b.min*MIN-ALERT_MIN*MIN)}`}catch(err){msg='Guardado. El aviso se programará en unos minutos.'}}
+    {try{notified=await scheduleFor(boss,ch,kind==='spawn'?at+MIN:at);if(notified)msg=`Aviso programado para ${hm((kind==='spawn'?at+MIN:at)+b.min*MIN-ALERT_MIN*MIN)}`}catch(err){msg='Guardado. El aviso se programará en unos minutos.'}}
     await add('events',{boss,map:b.map.id,ch,kind,at,notified});toast(msg);
     return}
   const d=e.target.closest('[data-del]');if(d){const id=d.dataset.del;if(sheet.armed===id){try{await remove('events',id);sheet.armed=null}catch(err){toast('No se pudo borrar')}}else sheet.armed=id;drawSheet()}
