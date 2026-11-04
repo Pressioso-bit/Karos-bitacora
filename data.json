@@ -614,18 +614,12 @@
     "volcano-1-1",
     "volcano-1-2",
     "volcano-1-3",
-    "volcano-1-4",
-    "volcano-1-5"
+    "volcano-1-4"
    ]
   },
   "volcano|2": {
    "anchor": "c-1103-0541k",
-   "sent": [
-    "volcano-2-11",
-    "volcano-2-12",
-    "volcano-2-13",
-    "volcano-2-14"
-   ]
+   "sent": []
   },
   "slobreath|1": {
    "anchor": "c-1103-2104k-slo1",
@@ -645,18 +639,11 @@
   },
   "reina|1": {
    "anchor": "c-1102-2034k",
-   "sent": [
-    "reina-1-17",
-    "reina-1-18",
-    "reina-1-19",
-    "reina-1-20"
-   ]
+   "sent": []
   },
   "slobreath|2": {
    "anchor": "c009",
-   "sent": [
-    "slobreath-2-20"
-   ]
+   "sent": []
   },
   "osobuho|1": {
    "anchor": "c-1103-2104k-1",
