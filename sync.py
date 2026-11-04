@@ -113,6 +113,8 @@ for (boss, ch), ev in last.items():
             continue
         if m > 1 and when > now + 4 * 3600000:
             break
+        if m > 1 and target - ev["at"] > 6 * 3600000:
+            break  # too long without real news: stop guessing
         if seq in rec["sent"]:
             continue
         if m == 1:
