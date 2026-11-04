@@ -430,6 +430,44 @@
    "src": "claude",
    "est": true,
    "notified": true
+  },
+  {
+   "id": "c-1103-2103s-1",
+   "boss": "osobuho",
+   "map": "berneo",
+   "ch": 1,
+   "kind": "spawn",
+   "at": 1793750580000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1103-2103s-2",
+   "boss": "osobuho",
+   "map": "berneo",
+   "ch": 2,
+   "kind": "spawn",
+   "at": 1793750580000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1103-2104k-1",
+   "boss": "osobuho",
+   "map": "berneo",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793750640000,
+   "src": "claude",
+   "est": true
+  },
+  {
+   "id": "c-1103-2104k-2",
+   "boss": "osobuho",
+   "map": "berneo",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793750640000,
+   "src": "claude",
+   "est": true
   }
  ],
  "prices": [
