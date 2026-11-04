@@ -530,11 +530,10 @@
    ]
   },
   "slobreath|1": {
-   "anchor": "c-1102-2118k",
+   "anchor": "c-1103-2104k-slo1",
    "sent": [
-    "slobreath-1-16",
-    "slobreath-1-17",
-    "slobreath-1-18"
+    "slobreath-1-1",
+    "slobreath-1-2"
    ]
   },
   "reina|2": {
@@ -561,11 +560,15 @@
   },
   "osobuho|1": {
    "anchor": "c-1103-2104k-1",
-   "sent": []
+   "sent": [
+    "osobuho-1-1"
+   ]
   },
   "osobuho|2": {
    "anchor": "c-1103-2104k-2",
-   "sent": []
+   "sent": [
+    "osobuho-2-1"
+   ]
   }
  }
 }
