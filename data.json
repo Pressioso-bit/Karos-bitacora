@@ -952,6 +952,15 @@
    "at": 1793830440000,
    "src": "claude",
    "note": "Tempteroon"
+  },
+  {
+   "id": "c-1104-1946k",
+   "boss": "reina",
+   "map": "tempteroon",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793832360000,
+   "src": "claude"
   }
  ],
  "prices": [
