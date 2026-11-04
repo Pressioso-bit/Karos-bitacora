@@ -132,6 +132,16 @@ for (boss, ch), ev in last.items():
             print("scheduled" if m == 1 else "estimated scheduled", name, ch, hm(target))
         except Exception as e:
             print("schedule failed:", e)
+    # drop estimates already queued for an old chain that is now past the 6 h limit
+    keep = []
+    for seq in rec["sent"]:
+        m_ = int(seq.rsplit("-", 1)[1])
+        if m_ > 1 and k + m_ * avg - ev["at"] > 6 * 3600000:
+            ntfy_delete(seq)
+            print("dropped stale estimate", seq)
+        else:
+            keep.append(seq)
+    rec["sent"] = keep
     seqs[pair] = rec
 data["seqs"] = seqs
 data.pop("est_sent", None)
