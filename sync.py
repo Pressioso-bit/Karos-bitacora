@@ -98,7 +98,7 @@ for (boss, ch), ev in last.items():
         if rec["sent"]:
             print("cancelled", name, ch, len(rec["sent"]))
         rec = {"anchor": ev["id"], "sent": []}
-    k = ev["at"] + (60000 if ev.get("kind") == "spawn" else 0)
+    k = ev["at"]  # spawn and kill are the same moment
     avg = (mn + mx) / 2 * 60000
     half = (mx - mn) / 2 * 60000
     for m in range(1, 21):

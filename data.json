@@ -191,17 +191,6 @@
    "src": "claude"
   },
   {
-   "id": "c-1102-1857k",
-   "boss": "reina",
-   "map": "tempteroon",
-   "ch": 2,
-   "kind": "kill",
-   "at": 1793656620000,
-   "src": "claude",
-   "est": true,
-   "notified": true
-  },
-  {
    "id": "c-1102-1903s",
    "boss": "reina",
    "map": "tempteroon",
@@ -209,17 +198,6 @@
    "kind": "spawn",
    "at": 1793656980000,
    "src": "claude"
-  },
-  {
-   "id": "c-1102-1904k",
-   "boss": "reina",
-   "map": "tempteroon",
-   "ch": 1,
-   "kind": "kill",
-   "at": 1793657040000,
-   "src": "claude",
-   "est": true,
-   "notified": true
   },
   {
    "id": "c-1102-2026k",
@@ -241,17 +219,6 @@
    "src": "claude"
   },
   {
-   "id": "c-1102-2034k",
-   "boss": "reina",
-   "map": "tempteroon",
-   "ch": 1,
-   "kind": "kill",
-   "at": 1793662440000,
-   "src": "claude",
-   "est": true,
-   "notified": true
-  },
-  {
    "id": "c-1102-2117s",
    "boss": "slobreath",
    "map": "berneo",
@@ -259,17 +226,6 @@
    "kind": "spawn",
    "at": 1793665020000,
    "src": "claude"
-  },
-  {
-   "id": "c-1102-2118k",
-   "boss": "slobreath",
-   "map": "berneo",
-   "ch": 1,
-   "kind": "kill",
-   "at": 1793665080000,
-   "src": "claude",
-   "est": true,
-   "notified": true
   },
   {
    "id": "c-1102-2158s",
@@ -281,17 +237,6 @@
    "src": "claude"
   },
   {
-   "id": "c-1102-2159k",
-   "boss": "reina",
-   "map": "tempteroon",
-   "ch": 2,
-   "kind": "kill",
-   "at": 1793667540000,
-   "src": "claude",
-   "est": true,
-   "notified": true
-  },
-  {
    "id": "c-1102-2331s",
    "boss": "reina",
    "map": "tempteroon",
@@ -299,17 +244,6 @@
    "kind": "spawn",
    "at": 1793673060000,
    "src": "claude"
-  },
-  {
-   "id": "c-1102-2332k",
-   "boss": "reina",
-   "map": "tempteroon",
-   "ch": 2,
-   "kind": "kill",
-   "at": 1793673120000,
-   "src": "claude",
-   "est": true,
-   "notified": true
   },
   {
    "id": "c-1103-0003s",
@@ -321,17 +255,6 @@
    "src": "claude"
   },
   {
-   "id": "c-1103-0004k",
-   "boss": "volcano",
-   "map": "lupinel",
-   "ch": 2,
-   "kind": "kill",
-   "at": 1793675040000,
-   "src": "claude",
-   "est": true,
-   "notified": true
-  },
-  {
    "id": "c-1103-0540s",
    "boss": "volcano",
    "map": "lupinel",
@@ -339,17 +262,6 @@
    "kind": "spawn",
    "at": 1793695200000,
    "src": "claude"
-  },
-  {
-   "id": "c-1103-0541k",
-   "boss": "volcano",
-   "map": "lupinel",
-   "ch": 2,
-   "kind": "kill",
-   "at": 1793695260000,
-   "src": "claude",
-   "est": true,
-   "notified": true
   },
   {
    "id": "c-1103-1430s",
@@ -361,17 +273,6 @@
    "src": "claude"
   },
   {
-   "id": "c-1103-1431k",
-   "boss": "reina",
-   "map": "tempteroon",
-   "ch": 2,
-   "kind": "kill",
-   "at": 1793727060000,
-   "src": "claude",
-   "est": true,
-   "notified": true
-  },
-  {
    "id": "c-1103-1928s",
    "boss": "reina",
    "map": "tempteroon",
@@ -379,17 +280,6 @@
    "kind": "spawn",
    "at": 1793744880000,
    "src": "claude"
-  },
-  {
-   "id": "c-1103-1929k",
-   "boss": "reina",
-   "map": "tempteroon",
-   "ch": 2,
-   "kind": "kill",
-   "at": 1793744940000,
-   "src": "claude",
-   "est": true,
-   "notified": true
   },
   {
    "id": "c-1103-1941s",
@@ -401,17 +291,6 @@
    "src": "claude"
   },
   {
-   "id": "c-1103-1942k",
-   "boss": "volcano",
-   "map": "lupinel",
-   "ch": 1,
-   "kind": "kill",
-   "at": 1793745720000,
-   "src": "claude",
-   "est": true,
-   "notified": true
-  },
-  {
    "id": "c-1103-2038s",
    "boss": "reina",
    "map": "tempteroon",
@@ -419,17 +298,6 @@
    "kind": "spawn",
    "at": 1793749080000,
    "src": "claude"
-  },
-  {
-   "id": "c-1103-2039k",
-   "boss": "reina",
-   "map": "tempteroon",
-   "ch": 2,
-   "kind": "kill",
-   "at": 1793749140000,
-   "src": "claude",
-   "est": true,
-   "notified": true
   },
   {
    "id": "c-1103-2103s-1",
@@ -459,36 +327,6 @@
    "src": "claude"
   },
   {
-   "id": "c-1103-2104k-1",
-   "boss": "osobuho",
-   "map": "berneo",
-   "ch": 1,
-   "kind": "kill",
-   "at": 1793750640000,
-   "src": "claude",
-   "est": true
-  },
-  {
-   "id": "c-1103-2104k-2",
-   "boss": "osobuho",
-   "map": "berneo",
-   "ch": 2,
-   "kind": "kill",
-   "at": 1793750640000,
-   "src": "claude",
-   "est": true
-  },
-  {
-   "id": "c-1103-2104k-slo1",
-   "boss": "slobreath",
-   "map": "berneo",
-   "ch": 1,
-   "kind": "kill",
-   "at": 1793750640000,
-   "src": "claude",
-   "est": true
-  },
-  {
    "id": "c-1103-sneekie-s2",
    "boss": "sneekie",
    "map": "lupinel",
@@ -496,16 +334,6 @@
    "kind": "spawn",
    "at": 1793751120000,
    "src": "claude"
-  },
-  {
-   "id": "c-1103-sneekie-k2",
-   "boss": "sneekie",
-   "map": "lupinel",
-   "ch": 2,
-   "kind": "kill",
-   "at": 1793751180000,
-   "src": "claude",
-   "est": true
   },
   {
    "id": "c-1103-sneekie-s1",
@@ -517,16 +345,6 @@
    "src": "claude"
   },
   {
-   "id": "c-1103-sneekie-k1",
-   "boss": "sneekie",
-   "map": "lupinel",
-   "ch": 1,
-   "kind": "kill",
-   "at": 1793751240000,
-   "src": "claude",
-   "est": true
-  },
-  {
    "id": "c-1103-barbaro-s1",
    "boss": "barbaro",
    "map": "tempteroon",
@@ -536,16 +354,6 @@
    "src": "claude"
   },
   {
-   "id": "c-1103-barbaro-k1",
-   "boss": "barbaro",
-   "map": "tempteroon",
-   "ch": 1,
-   "kind": "kill",
-   "at": 1793752260000,
-   "src": "claude",
-   "est": true
-  },
-  {
    "id": "c-1103-2206s",
    "boss": "reina",
    "map": "tempteroon",
@@ -553,16 +361,6 @@
    "kind": "spawn",
    "at": 1793754360000,
    "src": "claude"
-  },
-  {
-   "id": "c-1103-2207k",
-   "boss": "reina",
-   "map": "tempteroon",
-   "ch": 2,
-   "kind": "kill",
-   "at": 1793754420000,
-   "src": "claude",
-   "est": true
   },
   {
    "id": "c-1103-2337s",
@@ -592,16 +390,6 @@
    "src": "claude"
   },
   {
-   "id": "c-1104-0001k",
-   "boss": "volcano",
-   "map": "lupinel",
-   "ch": 2,
-   "kind": "kill",
-   "at": 1793761260000,
-   "src": "claude",
-   "est": true
-  },
-  {
    "id": "c-1104-0258s",
    "boss": "reina",
    "map": "tempteroon",
@@ -609,16 +397,6 @@
    "kind": "spawn",
    "at": 1793771880000,
    "src": "claude"
-  },
-  {
-   "id": "c-1104-0259k",
-   "boss": "reina",
-   "map": "tempteroon",
-   "ch": 1,
-   "kind": "kill",
-   "at": 1793771940000,
-   "src": "claude",
-   "est": true
   },
   {
    "id": "c-1104-1133s",
@@ -630,16 +408,6 @@
    "src": "claude"
   },
   {
-   "id": "c-1104-1134k",
-   "boss": "osobuho",
-   "map": "berneo",
-   "ch": 1,
-   "kind": "kill",
-   "at": 1793802840000,
-   "src": "claude",
-   "est": true
-  },
-  {
    "id": "c-1104-1139s",
    "boss": "sneekie",
    "map": "lupinel",
@@ -647,16 +415,6 @@
    "kind": "spawn",
    "at": 1793803140000,
    "src": "claude"
-  },
-  {
-   "id": "c-1104-1140k",
-   "boss": "sneekie",
-   "map": "lupinel",
-   "ch": 2,
-   "kind": "kill",
-   "at": 1793803200000,
-   "src": "claude",
-   "est": true
   },
   {
    "id": "c-1104-1143s",
@@ -668,16 +426,6 @@
    "src": "claude"
   },
   {
-   "id": "c-1104-1144k",
-   "boss": "sneekie",
-   "map": "lupinel",
-   "ch": 1,
-   "kind": "kill",
-   "at": 1793803440000,
-   "src": "claude",
-   "est": true
-  },
-  {
    "id": "c-1104-1331s",
    "boss": "reina",
    "map": "tempteroon",
@@ -685,16 +433,6 @@
    "kind": "spawn",
    "at": 1793809860000,
    "src": "claude"
-  },
-  {
-   "id": "c-1104-1332k",
-   "boss": "reina",
-   "map": "tempteroon",
-   "ch": 1,
-   "kind": "kill",
-   "at": 1793809920000,
-   "src": "claude",
-   "est": true
   },
   {
    "id": "c-1104-1333k-wyv2",
@@ -713,16 +451,6 @@
    "kind": "spawn",
    "at": 1793810220000,
    "src": "claude"
-  },
-  {
-   "id": "c-1104-1338k-wyv1",
-   "boss": "wyvernoro",
-   "map": "tempteroon",
-   "ch": 1,
-   "kind": "kill",
-   "at": 1793810280000,
-   "src": "claude",
-   "est": true
   },
   {
    "id": "c-1104-1510-reset-reina-1",
@@ -932,16 +660,6 @@
    "kind": "spawn",
    "at": 1793826840000,
    "src": "claude"
-  },
-  {
-   "id": "c-1104-1815k",
-   "boss": "reina",
-   "map": "tempteroon",
-   "ch": 1,
-   "kind": "kill",
-   "at": 1793826900000,
-   "src": "claude",
-   "est": true
   },
   {
    "id": "c-1104-1914k-hada1",
