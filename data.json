@@ -506,7 +506,8 @@
    "anchor": "c-1103-0541k",
    "sent": [
     "volcano-2-11",
-    "volcano-2-12"
+    "volcano-2-12",
+    "volcano-2-13"
    ]
   },
   "slobreath|1": {
@@ -521,14 +522,16 @@
    "anchor": "c-1103-2039k",
    "sent": [
     "reina-2-1",
-    "reina-2-2"
+    "reina-2-2",
+    "reina-2-3"
    ]
   },
   "reina|1": {
    "anchor": "c-1102-2034k",
    "sent": [
     "reina-1-17",
-    "reina-1-18"
+    "reina-1-18",
+    "reina-1-19"
    ]
   },
   "slobreath|2": {
@@ -536,6 +539,14 @@
    "sent": [
     "slobreath-2-20"
    ]
+  },
+  "osobuho|1": {
+   "anchor": "c-1103-2104k-1",
+   "sent": []
+  },
+  "osobuho|2": {
+   "anchor": "c-1103-2104k-2",
+   "sent": []
   }
  }
 }
