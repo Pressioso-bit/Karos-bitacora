@@ -333,7 +333,8 @@ function status(bossId,ch,now){
   // a spawn with no kill yet: assume it dies about a minute later
   const k=last.kind==='spawn'?last.at+MIN:last.at;
   if(last.kind==='spawn'&&now<last.at+b.min*MIN)return{state:'alive',since:last.at,last};
-  const start=k+b.min*MIN,end=k+b.max*MIN;
+  // fixed-time bosses: keep the alert up 10 min past the expected time, then drop it
+  const start=k+b.min*MIN,end=k+b.max*MIN+(b.min===b.max?10*MIN:0);
   if(now<start)return{state:start-now<=10*MIN?'soon':'wait',start,end,last};
   if(now<=end)return{state:'open',start,end,last};
   // window passed with no new report: project the chain, assuming each one is killed as it appears
