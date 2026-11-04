@@ -723,6 +723,206 @@
    "at": 1793810280000,
    "src": "claude",
    "est": true
+  },
+  {
+   "id": "c-1104-1510-reset-reina-1",
+   "boss": "reina",
+   "map": "tempteroon",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-reina-2",
+   "boss": "reina",
+   "map": "tempteroon",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-neoreina-1",
+   "boss": "neoreina",
+   "map": "tempteroon",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-neoreina-2",
+   "boss": "neoreina",
+   "map": "tempteroon",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-barbaro-1",
+   "boss": "barbaro",
+   "map": "tempteroon",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-barbaro-2",
+   "boss": "barbaro",
+   "map": "tempteroon",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-wyvernoro-1",
+   "boss": "wyvernoro",
+   "map": "tempteroon",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-wyvernoro-2",
+   "boss": "wyvernoro",
+   "map": "tempteroon",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-volcano-1",
+   "boss": "volcano",
+   "map": "lupinel",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-volcano-2",
+   "boss": "volcano",
+   "map": "lupinel",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-neovolcano-1",
+   "boss": "neovolcano",
+   "map": "lupinel",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-neovolcano-2",
+   "boss": "neovolcano",
+   "map": "lupinel",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-sneekie-1",
+   "boss": "sneekie",
+   "map": "lupinel",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-sneekie-2",
+   "boss": "sneekie",
+   "map": "lupinel",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-slobreath-1",
+   "boss": "slobreath",
+   "map": "berneo",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-slobreath-2",
+   "boss": "slobreath",
+   "map": "berneo",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-frezzard-1",
+   "boss": "frezzard",
+   "map": "berneo",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-frezzard-2",
+   "boss": "frezzard",
+   "map": "berneo",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-osobuho-1",
+   "boss": "osobuho",
+   "map": "berneo",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
+  },
+  {
+   "id": "c-1104-1510-reset-osobuho-2",
+   "boss": "osobuho",
+   "map": "berneo",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793815800000,
+   "src": "claude",
+   "note": "reinicio"
   }
  ],
  "prices": [
