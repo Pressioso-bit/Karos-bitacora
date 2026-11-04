@@ -657,6 +657,25 @@
    "at": 1793803200000,
    "src": "claude",
    "est": true
+  },
+  {
+   "id": "c-1104-1143s",
+   "boss": "sneekie",
+   "map": "lupinel",
+   "ch": 1,
+   "kind": "spawn",
+   "at": 1793803380000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1104-1144k",
+   "boss": "sneekie",
+   "map": "lupinel",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793803440000,
+   "src": "claude",
+   "est": true
   }
  ],
  "prices": [
