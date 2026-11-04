@@ -581,6 +581,25 @@
    "kind": "kill",
    "at": 1793759821000,
    "src": "claude"
+  },
+  {
+   "id": "c-1104-0000s",
+   "boss": "volcano",
+   "map": "lupinel",
+   "ch": 2,
+   "kind": "spawn",
+   "at": 1793761200000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1104-0001k",
+   "boss": "volcano",
+   "map": "lupinel",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793761260000,
+   "src": "claude",
+   "est": true
   }
  ],
  "prices": [
