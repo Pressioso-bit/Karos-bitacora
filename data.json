@@ -715,6 +715,24 @@
    "kind": "kill",
    "at": 1793833680000,
    "src": "claude"
+  },
+  {
+   "id": "c-1104-2011k-bar1",
+   "boss": "barbaro",
+   "map": "tempteroon",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793833860000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1104-2011k-bar2",
+   "boss": "barbaro",
+   "map": "tempteroon",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793833860000,
+   "src": "claude"
   }
  ],
  "prices": [
