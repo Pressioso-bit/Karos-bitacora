@@ -111,7 +111,7 @@ for (boss, ch), ev in last.items():
         when = target - ALERT_MIN * 60000
         if end < now or (m > 1 and when < now):
             continue
-        if when > now + 4 * 3600000:
+        if m > 1 and when > now + 4 * 3600000:
             break
         if seq in rec["sent"]:
             continue
