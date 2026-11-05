@@ -952,6 +952,16 @@
    "kind": "kill",
    "at": 1793853720000,
    "src": "claude"
+  },
+  {
+   "id": "c-1105-0322k-hada-c2",
+   "boss": "haditas",
+   "map": "otros",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793859720000,
+   "src": "claude",
+   "note": "Tempteroon"
   }
  ],
  "prices": [
