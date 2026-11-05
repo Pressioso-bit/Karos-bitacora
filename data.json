@@ -1055,6 +1055,15 @@
    "at": 1793908200000,
    "src": "claude",
    "note": "canal sin confirmar"
+  },
+  {
+   "id": "c-1105-1808s-s1",
+   "boss": "slobreath",
+   "map": "berneo",
+   "ch": 1,
+   "kind": "spawn",
+   "at": 1793912880000,
+   "src": "claude"
   }
  ],
  "prices": [
