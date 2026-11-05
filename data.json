@@ -1109,6 +1109,26 @@
    "kind": "kill",
    "at": 1793918460000,
    "src": "claude"
+  },
+  {
+   "id": "c-1105-hadayeti-k1",
+   "boss": "haditas",
+   "map": "tempteroon",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793920620000,
+   "src": "claude",
+   "note": "hada de los yetis"
+  },
+  {
+   "id": "c-1105-hadayeti-k2",
+   "boss": "haditas",
+   "map": "tempteroon",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793920680000,
+   "src": "claude",
+   "note": "hada de los yetis"
   }
  ],
  "prices": [
