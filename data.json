@@ -925,6 +925,24 @@
    "kind": "kill",
    "at": 1793851980000,
    "src": "claude"
+  },
+  {
+   "id": "c-1105-0137s-slo1",
+   "boss": "slobreath",
+   "map": "berneo",
+   "ch": 1,
+   "kind": "spawn",
+   "at": 1793853420000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1105-0137s-slo2",
+   "boss": "slobreath",
+   "map": "berneo",
+   "ch": 2,
+   "kind": "spawn",
+   "at": 1793853420000,
+   "src": "claude"
   }
  ],
  "prices": [
