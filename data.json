@@ -1093,6 +1093,16 @@
    "src": "claude"
   },
   {
+   "id": "c-1105-1935k-v1",
+   "boss": "volcano",
+   "map": "lupinel",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793918100000,
+   "src": "claude",
+   "note": "~2 min después del canal 2"
+  },
+  {
    "id": "c-1105-1941s-s2",
    "boss": "slobreath",
    "map": "berneo",
