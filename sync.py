@@ -12,7 +12,7 @@ BOSSES = {
     "reina": ("Reina de las Nieves", "Tempteroon", 83, 97),
     "neoreina": ("Neo Reina de las Nieves", "Tempteroon", 833, 847),
     "barbaro": ("Bárbaro", "Tempteroon", 300, 300),
-    "wyvernoro": ("Wyvern de oro", "Tempteroon", 350, 350),
+    "wyvernoro": ("Wyvern de oro", "Tempteroon", 360, 360),
     "volcano": ("Volcano", "Lupinel", 83, 97),
     "neovolcano": ("Neo Volcano", "Lupinel", 833, 847),
     "sneekie": ("Sneekie", "Lupinel", 300, 300),
