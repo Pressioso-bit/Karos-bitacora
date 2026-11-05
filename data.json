@@ -761,6 +761,15 @@
    "at": 1793839680000,
    "src": "claude",
    "note": "Tempteroon, hada 1, coord 84.6/51.2"
+  },
+  {
+   "id": "c-1104-2210-v1",
+   "boss": "volcano",
+   "map": "lupinel",
+   "ch": 1,
+   "kind": "spawn",
+   "at": 1793841000000,
+   "src": "claude"
   }
  ],
  "prices": [
