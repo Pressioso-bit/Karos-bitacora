@@ -1051,12 +1051,10 @@
    ]
   },
   "volcano|2": {
-   "anchor": "c-1105-1154s-v2",
+   "anchor": "c-1105-1455s-v2",
    "sent": [
     "volcano-2-1",
-    "volcano-2-2",
-    "volcano-2-3",
-    "volcano-2-4"
+    "volcano-2-2"
    ]
   },
   "slobreath|1": {
@@ -1071,7 +1069,8 @@
    "anchor": "c-1105-1358s-r2",
    "sent": [
     "reina-2-1",
-    "reina-2-2"
+    "reina-2-2",
+    "reina-2-3"
    ]
   },
   "reina|1": {
