@@ -167,6 +167,7 @@ input[type=time]{width:120px}
 .islaslots span.cur{background:var(--accent);color:#fff}
 .mapimg{width:100%;max-width:100%;height:auto;border-radius:12px;display:block;border:1px solid var(--line)}
 .coords{font-family:var(--ui);font-weight:700;font-size:16px;white-space:nowrap}
+.mutebox{display:grid;gap:8px;background:var(--sunk);border-radius:12px;padding:12px}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:999px;font-family:var(--ui);font-weight:600;z-index:30}
 @media (max-width:380px){.row{grid-template-columns:minmax(0,1fr) 80px 80px}.cell .t{font-size:17px}}
 @media (prefers-reduced-motion:no-preference){.cell.open,.cell.alive{animation:pulse 2s ease-in-out infinite}@keyframes pulse{50%{filter:brightness(1.08)}}}
@@ -288,7 +289,7 @@ async function remove(col,id){
 }
 async function loadRemote(){
   try{const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const d=await r.json();
-    remote={events:d.events||[],prices:d.prices||[]};mapsData={maps:d.maps||[],places:d.places||[]};if(d.topic){topic=d.topic;local.write('topic',topic)}
+    remote={events:d.events||[],prices:d.prices||[]};mapsData={maps:d.maps||[],places:d.places||[]};if(typeof d.mute_until==='number'){muteUntil=d.mute_until;local.write('mute',muteUntil);paintMute()}if(d.topic){topic=d.topic;local.write('topic',topic)}
     (d.deleted||[]).forEach(id=>hidden.add(id));local.write('remote',remote);compose();renderAll();
   }catch(e){}
 }
@@ -311,21 +312,36 @@ async function cancelFor(bossId,ch){
   await Promise.all(Array.from({length:8},(_,i)=>fetch('https://ntfy.sh/'+encodeURIComponent(topic)+'/'+bossId+'-'+ch+'-'+(i+1),{method:'DELETE'}).catch(()=>{})));
 }
 async function scheduleFor(bossId,ch,killAt){
-  const b=BOSS[bossId];const start=killAt+b.min*MIN,end=killAt+b.max*MIN;
+  const b=BOSS[bossId];if(muted())return false;const start=killAt+b.min*MIN,end=killAt+b.max*MIN;
   const when=start-ALERT_MIN*MIN;await cancelFor(bossId,ch);if(end<Date.now())return false;
   const win=b.min===b.max?hm(start):hm(start)+' – '+hm(end);
   await ntfy(`${b.map.name} · canal ${ch}. Ventana ${win}.`,`${b.name} sale en ${ALERT_MIN} min`,when,`${bossId}-${ch}-1`);
   return true;
 }
+let muteUntil=local.read('mute',0);
+const muted=()=>Date.now()<muteUntil;
+function islaSeqs(){const out=[];const now=Date.now();for(let d=0;d<=1;d++)for(const s of ['13:50','16:50','19:50','22:50','01:50']){const [H,M]=s.split(':').map(Number);const t=new Date(now);t.setDate(t.getDate()+d);t.setHours(H,M,0,0);if(t.getTime()>now&&t.getTime()-now<=24*3600e3){out.push('isla-'+t.getFullYear()+pad(t.getMonth()+1)+pad(t.getDate())+pad(H)+pad(M))}}return out}
+async function setMute(ms){
+  muteUntil=ms?Date.now()+ms:0;local.write('mute',muteUntil);paintMute();
+  syncPost({t:'mute',until:muteUntil});
+  if(muteUntil){
+    const seqs=[];Object.keys(BOSS).forEach(b=>[1,2].forEach(ch=>{for(let m=1;m<=4;m++)seqs.push(b+'-'+ch+'-'+m)}));seqs.push(...islaSeqs());
+    await Promise.all(seqs.map(s=>fetch('https://ntfy.sh/'+encodeURIComponent(topic)+'/'+s,{method:'DELETE'}).catch(()=>{})));
+    toast('Avisos silenciados hasta las '+hm(muteUntil));
+  }else toast('Avisos activados. Se reprograman en unos minutos.');
+  if(avisosOpen)openAvisos();
+}
+function paintMute(){const b=$('#snd');if(!b)return;if(muted()){b.textContent='🔕 hasta '+hm(muteUntil);b.classList.add('on')}else{b.textContent='🔔 Avisos';b.classList.remove('on')}}
 function openAvisos(){
   $('#sheetroot').innerHTML=`<div class="scrim" id="scrim"></div><div class="sheet" role="dialog" aria-label="Avisos"><div class="sheet-in">
    <h3 style="color:var(--accent)">Avisos al celular</h3>
+   <div class="mutebox">${muted()?`<p style="margin:0"><b>🔕 Silenciados hasta las ${hm(muteUntil)}</b></p><button class="btn pri" data-mute="0">Activar avisos</button>`:`<p style="margin:0"><b>🔔 Avisos activos.</b> Silenciar por:</p><div class="seg"><button data-mute="1">1 h</button><button data-mute="3">3 h</button><button data-mute="8">8 h</button><button data-mute="24">1 día</button></div>`}</div>
    <p style="margin:0;font-size:14px">Cuando marcas que un boss <b>murió</b>, la app programa una notificación ${ALERT_MIN} minutos antes de que vuelva a salir. Llega aunque tengas la app cerrada y el celular en silencio.</p>
    <ol class="steps"><li>Instala <b>ntfy</b> desde la App Store (es gratis).</li><li>En ntfy toca <b>+</b>, pega este canal y suscríbete:</li></ol>
    <div class="topic"><input id="topicin" value="${esc(topic)}" readonly><button class="btn" id="copytopic">Copiar</button></div>
    <ol class="steps" start="3"><li>Permite las notificaciones de ntfy cuando te lo pida.</li><li>Toca <b>Probar</b> para confirmar que te llega.</li></ol>
    <button class="btn pri" id="testntfy">Probar notificación</button>
-   <p class="note">Si borras una muerte, el aviso que ya se programó igual llega.</p>
+   <p class="note">Al silenciar se borran los avisos pendientes. Al volver a activarlos, se reprograman solos en unos minutos.</p>
    <button class="close" id="sclose">Cerrar</button></div></div>`;
   avisosOpen=true;
 }
@@ -423,6 +439,7 @@ document.addEventListener('click',async e=>{
   if(avisosOpen){
     if(e.target.id==='scrim'||e.target.id==='sclose'){avisosOpen=false;$('#sheetroot').innerHTML='';return}
     if(e.target.id==='copytopic'){const i=$('#topicin');try{await navigator.clipboard.writeText(topic);toast('Canal copiado')}catch(err){i.focus();i.select();toast('Mantén presionado para copiar')}return}
+    const mb=e.target.closest('[data-mute]');if(mb){await setMute(Number(mb.dataset.mute)*3600e3);return}
     if(e.target.id==='testntfy'){try{await ntfy('Si ves esto, los avisos de Karos funcionan.','Prueba de Karos');toast('Enviada. Revisa ntfy.')}catch(err){toast('No se pudo enviar. Revisa tu conexión.')}return}
     return}
   if(!sheet)return;
@@ -496,7 +513,7 @@ function renderMaps(){
       ${pl.length?`<ul class="recent">${pl.map(p=>`<li><span><b>${esc(p.name)}</b>${p.note?`<br><small class="note">${esc(p.note)}</small>`:''}</span><span class="coords">${esc(p.coords||'')}</span></li>`).join('')}</ul>`:''}
     </section>`}).join('');
 }
-function renderAll(){renderMaps();renderBosses();renderPrices();drawSheet();checkAlerts()}
+function renderAll(){paintMute();renderMaps();renderBosses();renderPrices();drawSheet();checkAlerts()}
 function tick(){$('#clock').textContent=new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});renderBosses();checkAlerts()}
 setInterval(tick,1000);boot();tick();
 </script>

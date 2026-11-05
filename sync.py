@@ -61,6 +61,9 @@ for line in lines:
             data[col].append(doc)
     elif msg.get("t") == "del":
         deleted.add(msg.get("id"))
+    elif msg.get("t") == "mute" and m.get("time", 0) >= data.get("mute_set_at", 0):
+        data["mute_until"] = int(msg.get("until") or 0)
+        data["mute_set_at"] = m.get("time", 0)
 
 for col in ("events", "prices"):
     data[col] = sorted([d for d in data[col] if d["id"] not in deleted], key=lambda d: d["at"])
@@ -88,10 +91,18 @@ last = {}
 for ev in data["events"]:
     if ev.get("boss") in BOSSES:
         last[(ev["boss"], ev["ch"])] = ev  # events are sorted by time
+muted = now < data.get("mute_until", 0)
 for (boss, ch), ev in last.items():
     name, mapname, mn, mx = BOSSES[boss]
     pair = f"{boss}|{ch}"
     rec = seqs.get(pair) or {"anchor": None, "sent": []}
+    if muted:
+        for seq in rec["sent"]:
+            ntfy_delete(seq)
+        if rec["sent"]:
+            print("muted: cancelled", name, ch, len(rec["sent"]))
+        seqs[pair] = {"anchor": None, "sent": []}
+        continue
     if rec["anchor"] != ev["id"]:
         for seq in rec["sent"]:
             ntfy_delete(seq)
@@ -166,6 +177,12 @@ for d in (0, 1):
         H, M = map(int, s_.split(":"))
         slot = datetime(day.year, day.month, day.day, H, M, tzinfo=CL)
         key = slot.strftime("%Y-%m-%d %H:%M")
+        seq_isla = "isla-" + slot.strftime("%Y%m%d%H%M")
+        if muted:
+            if key in done:
+                ntfy_delete(seq_isla)
+                done.discard(key)
+            continue
         if key in done or not (nowdt < slot <= nowdt + timedelta(hours=24)):
             continue
         when = slot - timedelta(minutes=10)
@@ -173,7 +190,8 @@ for d in (0, 1):
         if (when - nowdt).total_seconds() > 15:
             q["at"] = str(int(when.timestamp()))
         req = urllib.request.Request(f"https://ntfy.sh/{topic}?{urllib.parse.urlencode(q)}",
-                                     data=f"Abre a las {s_}.".encode(), method="POST")
+                                     data=f"Abre a las {s_}.".encode(), method="POST",
+                                     headers={"X-Sequence-ID": seq_isla})
         try:
             urllib.request.urlopen(req, timeout=30)
             done.add(key)
