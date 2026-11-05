@@ -798,6 +798,15 @@
    "kind": "kill",
    "at": 1793843340000,
    "src": "claude"
+  },
+  {
+   "id": "c-1104-2337k-v1",
+   "boss": "volcano",
+   "map": "lupinel",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793846220000,
+   "src": "claude"
   }
  ],
  "prices": [
