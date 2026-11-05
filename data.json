@@ -1000,6 +1000,16 @@
    "src": "claude"
   },
   {
+   "id": "c-1105-1454s-v1",
+   "boss": "volcano",
+   "map": "lupinel",
+   "ch": 1,
+   "kind": "spawn",
+   "at": 1793901240000,
+   "src": "claude",
+   "note": "salió antes que el canal 2 (14:55)"
+  },
+  {
    "id": "c-1105-1455s-v2",
    "boss": "volcano",
    "map": "lupinel",
