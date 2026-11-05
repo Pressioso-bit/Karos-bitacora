@@ -1035,6 +1035,26 @@
    "kind": "spawn",
    "at": 1793907960000,
    "src": "claude"
+  },
+  {
+   "id": "c-1105-1650s-hadalup1",
+   "boss": "hadalupinel",
+   "map": "lupinel",
+   "ch": 1,
+   "kind": "spawn",
+   "at": 1793908200000,
+   "src": "claude",
+   "note": "canal sin confirmar"
+  },
+  {
+   "id": "c-1105-1650s-hadalup2",
+   "boss": "hadalupinel",
+   "map": "lupinel",
+   "ch": 2,
+   "kind": "spawn",
+   "at": 1793908200000,
+   "src": "claude",
+   "note": "canal sin confirmar"
   }
  ],
  "prices": [
