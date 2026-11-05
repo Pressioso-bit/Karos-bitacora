@@ -962,6 +962,24 @@
    "at": 1793859720000,
    "src": "claude",
    "note": "Tempteroon"
+  },
+  {
+   "id": "c-1105-1154s-v1",
+   "boss": "volcano",
+   "map": "lupinel",
+   "ch": 1,
+   "kind": "spawn",
+   "at": 1793890440000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1105-1154s-v2",
+   "boss": "volcano",
+   "map": "lupinel",
+   "ch": 2,
+   "kind": "spawn",
+   "at": 1793890440000,
+   "src": "claude"
   }
  ],
  "prices": [
