@@ -49,7 +49,7 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var
 .brand h1{margin:0;font-family:var(--display);font-weight:800;font-size:34px;letter-spacing:.5px;line-height:1}
 .brand h1 span{font-size:15px;font-family:var(--ui);font-weight:600;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-left:6px}
 .clock{font-family:var(--ui);font-weight:600;font-size:22px}
-.tabs{display:flex;gap:6px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
 .tabs button,.chip{font-family:var(--ui);font-weight:600;font-size:15px;letter-spacing:.04em;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:7px 14px;cursor:pointer}
 .tabs button[aria-selected="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .tools{margin-left:auto;display:flex;gap:6px}
@@ -497,7 +497,7 @@ function renderMaps(){
     </section>`}).join('');
 }
 function renderAll(){renderMaps();renderBosses();renderPrices();drawSheet();checkAlerts()}
-function tick(){$('#clock').textContent=new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit',second:'2-digit'});renderBosses();checkAlerts()}
+function tick(){$('#clock').textContent=new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});renderBosses();checkAlerts()}
 setInterval(tick,1000);boot();tick();
 </script>
 </body>
