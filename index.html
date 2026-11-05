@@ -248,17 +248,17 @@ const MAPS=[
   {id:'reina',name:'Reina de las Nieves',tag:'Normal',min:83,max:97},
   {id:'neoreina',name:'Neo Reina de las Nieves',tag:'Neo',min:833,max:847},
   {id:'barbaro',name:'Bárbaro',tag:'Evento',min:300,max:300},
-  {id:'wyvernoro',name:'Wyvern de oro',tag:'5h50 – 6h',min:350,max:360}]},
+  {id:'wyvernoro',name:'Wyvern de oro',tag:'5h50 – 6h',min:350,max:360},
+  {id:'haditas',name:'Hada',tag:'Cada 2h30',min:150,max:150}]},
  {id:'lupinel',name:'Lupinel',c:'var(--ember)',bosses:[
   {id:'volcano',name:'Volcano',tag:'Normal',min:83,max:97},
   {id:'neovolcano',name:'Neo Volcano',tag:'Neo',min:833,max:847},
-  {id:'sneekie',name:'Sneekie',tag:'Evento',min:300,max:300}]},
+  {id:'sneekie',name:'Sneekie',tag:'Evento',min:300,max:300},
+  {id:'hadalupinel',name:'Hada',tag:'Cada 2h30',min:150,max:150}]},
  {id:'berneo',name:'Berneo',c:'var(--dusk)',bosses:[
   {id:'slobreath',name:'Slobreath',tag:'Normal',min:83,max:97},
   {id:'frezzard',name:'Frezzard',tag:'Especial',min:293,max:307},
-  {id:'osobuho',name:'Oso Búho',tag:'Evento',min:300,max:300}]},
- {id:'otros',name:'Otros',c:'var(--accent)',bosses:[
-  {id:'haditas',name:'Haditas',tag:'Cada 2h30',min:150,max:150}]}
+  {id:'osobuho',name:'Oso Búho',tag:'Evento',min:300,max:300}]}
 ];
 const BOSS={};MAPS.forEach(m=>m.bosses.forEach(b=>BOSS[b.id]={...b,map:m}));
 const ALERT_MIN=10, MIN=60000;

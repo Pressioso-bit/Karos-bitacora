@@ -19,7 +19,8 @@ BOSSES = {
     "slobreath": ("Slobreath", "Berneo", 83, 97),
     "frezzard": ("Frezzard", "Berneo", 293, 307),
     "osobuho": ("Oso Búho", "Berneo", 300, 300),
-    "haditas": ("Haditas", "Otros", 150, 150),
+    "haditas": ("Hada", "Tempteroon", 150, 150),
+    "hadalupinel": ("Hada", "Lupinel", 150, 150),
 }
 ISLA = ["13:50", "16:50", "19:50", "22:50", "01:50"]
 

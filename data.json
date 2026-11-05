@@ -1225,7 +1225,7 @@
   {
    "id": "lupinel",
    "name": "Lupinel",
-   "img": null
+   "img": "mapas/lupinel.jpg"
   },
   {
    "id": "berneo",
@@ -1237,9 +1237,16 @@
   {
    "id": "pl-hada1",
    "map": "tempteroon",
-   "name": "Hada 1",
+   "name": "Hada",
    "coords": "84.6 / 51.2",
    "note": "Donde murió el 4 nov a las 21:48 (canal 1)"
+  },
+  {
+   "id": "pl-hada-lupinel",
+   "map": "lupinel",
+   "name": "Hada",
+   "coords": "21.4 / 80.7",
+   "note": "Salió el 5 nov a las 16:50"
   }
  ]
 }
