@@ -751,6 +751,16 @@
    "kind": "kill",
    "at": 1793838000000,
    "src": "claude"
+  },
+  {
+   "id": "c-1104-2148k-hada1",
+   "boss": "haditas",
+   "map": "otros",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793839680000,
+   "src": "claude",
+   "note": "Tempteroon, hada 1, coord 84.6/51.2"
   }
  ],
  "prices": [
