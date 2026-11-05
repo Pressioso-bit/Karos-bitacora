@@ -1064,6 +1064,15 @@
    "kind": "spawn",
    "at": 1793912880000,
    "src": "claude"
+  },
+  {
+   "id": "c-1105-1811s-r1",
+   "boss": "reina",
+   "map": "tempteroon",
+   "ch": 1,
+   "kind": "spawn",
+   "at": 1793913060000,
+   "src": "claude"
   }
  ],
  "prices": [
