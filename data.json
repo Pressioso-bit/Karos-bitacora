@@ -934,5 +934,31 @@
     "haditas-1-1"
    ]
   }
- }
+ },
+ "maps": [
+  {
+   "id": "tempteroon",
+   "name": "Tempteroon",
+   "img": "mapas/tempteroon.jpg"
+  },
+  {
+   "id": "lupinel",
+   "name": "Lupinel",
+   "img": null
+  },
+  {
+   "id": "berneo",
+   "name": "Berneo",
+   "img": null
+  }
+ ],
+ "places": [
+  {
+   "id": "pl-hada1",
+   "map": "tempteroon",
+   "name": "Hada 1",
+   "coords": "84.6 / 51.2",
+   "note": "Donde murió el 4 nov a las 21:48 (canal 1)"
+  }
+ ]
 }

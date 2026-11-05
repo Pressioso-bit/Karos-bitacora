@@ -165,6 +165,8 @@ input[type=time]{width:120px}
 .islaslots{display:flex;flex-wrap:wrap;gap:6px}
 .islaslots span{font-family:var(--ui);font-weight:600;font-size:15px;padding:4px 10px;border-radius:999px;background:var(--sunk);color:var(--muted)}
 .islaslots span.cur{background:var(--accent);color:#fff}
+.mapimg{width:100%;max-width:100%;height:auto;border-radius:12px;display:block;border:1px solid var(--line)}
+.coords{font-family:var(--ui);font-weight:700;font-size:16px;white-space:nowrap}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:999px;font-family:var(--ui);font-weight:600;z-index:30}
 @media (max-width:380px){.row{grid-template-columns:minmax(0,1fr) 80px 80px}.cell .t{font-size:17px}}
 @media (prefers-reduced-motion:no-preference){.cell.open,.cell.alive{animation:pulse 2s ease-in-out infinite}@keyframes pulse{50%{filter:brightness(1.08)}}}
@@ -178,6 +180,7 @@ input[type=time]{width:120px}
     <div class="tabs" role="tablist">
       <button role="tab" id="tab-b" aria-selected="true">Bosses</button>
       <button role="tab" id="tab-p" aria-selected="false">Precios</button>
+      <button role="tab" id="tab-m" aria-selected="false">Mapas</button>
       <div class="tools">
         <button class="chip" id="snd" title="Configurar notificaciones">🔔 Avisos</button>
         <button class="chip" id="wake" title="Mantener la pantalla encendida">☀︎</button>
@@ -212,6 +215,11 @@ input[type=time]{width:120px}
       <button type="submit">Guardar precio</button>
     </form>
     <div id="items"></div>
+  </main>
+
+  <main id="view-m" hidden>
+    <div id="mapsview"></div>
+    <p class="note" style="margin-top:12px">Mándale a Claude una captura del mapa o las coordenadas de un jefe y se agregan aquí.</p>
   </main>
 </div>
 
@@ -280,7 +288,7 @@ async function remove(col,id){
 }
 async function loadRemote(){
   try{const r=await fetch('data.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const d=await r.json();
-    remote={events:d.events||[],prices:d.prices||[]};if(d.topic){topic=d.topic;local.write('topic',topic)}
+    remote={events:d.events||[],prices:d.prices||[]};mapsData={maps:d.maps||[],places:d.places||[]};if(d.topic){topic=d.topic;local.write('topic',topic)}
     (d.deleted||[]).forEach(id=>hidden.add(id));local.write('remote',remote);compose();renderAll();
   }catch(e){}
 }
@@ -473,11 +481,22 @@ document.addEventListener('click',async e=>{const it=e.target.closest('[data-ite
   const pd=e.target.closest('[data-pdel]');if(pd){const id=pd.dataset.pdel;if(armedPrice===id){try{await remove('prices',id)}catch(err){toast('No se pudo borrar')}armedPrice=null}else armedPrice=id;renderPrices()}});
 
 /* ---------- tabs, clock, toast ---------- */
-function setTab(p){const isP=p==='precios';$('#view-b').hidden=isP;$('#view-p').hidden=!isP;$('#tab-b').setAttribute('aria-selected',!isP);$('#tab-p').setAttribute('aria-selected',isP)}
-$('#tab-b').onclick=()=>{location.hash='bosses';setTab('bosses')};$('#tab-p').onclick=()=>{location.hash='precios';setTab('precios')};
+function setTab(p){const v=p==='precios'?'p':p==='mapas'?'m':'b';['b','p','m'].forEach(k=>{$('#view-'+k).hidden=k!==v;$('#tab-'+k).setAttribute('aria-selected',k===v)})}
+$('#tab-b').onclick=()=>{location.hash='bosses';setTab('bosses')};$('#tab-p').onclick=()=>{location.hash='precios';setTab('precios')};$('#tab-m').onclick=()=>{location.hash='mapas';setTab('mapas')};
 window.addEventListener('hashchange',()=>setTab(location.hash.slice(1)));setTab(location.hash.slice(1));
 let tt;function toast(m){$('#toastroot').innerHTML=`<div class="toast" role="status">${esc(m)}</div>`;clearTimeout(tt);tt=setTimeout(()=>$('#toastroot').innerHTML='',2600)}
-function renderAll(){renderBosses();renderPrices();drawSheet();checkAlerts()}
+let mapsData={maps:[],places:[]};
+function renderMaps(){
+  const el=$('#mapsview');if(!el)return;
+  if(!mapsData.maps.length){el.innerHTML='<div class="empty">Cargando mapas…</div>';return}
+  el.innerHTML=mapsData.maps.map(m=>{const mp=MAPS.find(x=>x.id===m.id);const c=mp?mp.c:'var(--accent)';
+    const pl=mapsData.places.filter(p=>p.map===m.id);
+    return `<section class="map" style="--c:${c}"><div class="maphead"><h2>${esc(m.name)}</h2><span class="label">${pl.length} ubicaciones</span></div>
+      ${m.img?`<a href="${esc(m.img)}" target="_blank" rel="noopener"><img class="mapimg" src="${esc(m.img)}" alt="Mapa de ${esc(m.name)}" loading="lazy"></a>`:'<div class="empty" style="margin-top:0">Sin captura del mapa todavía.</div>'}
+      ${pl.length?`<ul class="recent">${pl.map(p=>`<li><span><b>${esc(p.name)}</b>${p.note?`<br><small class="note">${esc(p.note)}</small>`:''}</span><span class="coords">${esc(p.coords||'')}</span></li>`).join('')}</ul>`:''}
+    </section>`}).join('');
+}
+function renderAll(){renderMaps();renderBosses();renderPrices();drawSheet();checkAlerts()}
 function tick(){$('#clock').textContent=new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit',second:'2-digit'});renderBosses();checkAlerts()}
 setInterval(tick,1000);boot();tick();
 </script>
