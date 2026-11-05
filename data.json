@@ -844,6 +844,87 @@
    "at": 1793851800000,
    "src": "claude",
    "note": "Tempteroon, hada 1"
+  },
+  {
+   "id": "c-1105-0113k-osobuho1",
+   "boss": "osobuho",
+   "map": "berneo",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793851980000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1105-0113k-osobuho2",
+   "boss": "osobuho",
+   "map": "berneo",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793851980000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1105-0113k-sneekie1",
+   "boss": "sneekie",
+   "map": "lupinel",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793851980000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1105-0113k-sneekie2",
+   "boss": "sneekie",
+   "map": "lupinel",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793851980000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1105-0113k-barbaro1",
+   "boss": "barbaro",
+   "map": "tempteroon",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793851980000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1105-0113k-barbaro2",
+   "boss": "barbaro",
+   "map": "tempteroon",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793851980000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1105-0113k-frezzard1",
+   "boss": "frezzard",
+   "map": "berneo",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793851980000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1105-0113k-frezzard2",
+   "boss": "frezzard",
+   "map": "berneo",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793851980000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1105-0113k-volcano1",
+   "boss": "volcano",
+   "map": "lupinel",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793851980000,
+   "src": "claude"
   }
  ],
  "prices": [
