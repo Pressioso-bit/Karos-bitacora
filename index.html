@@ -168,6 +168,11 @@ input[type=time]{width:120px}
 .mapimg{width:100%;max-width:100%;height:auto;border-radius:12px;display:block;border:1px solid var(--line)}
 .coords{font-family:var(--ui);font-weight:700;font-size:16px;white-space:nowrap}
 .mutebox{display:grid;gap:8px;background:var(--sunk);border-radius:12px;padding:12px}
+.lock{position:fixed;inset:0;z-index:50;background:var(--bg);display:grid;place-items:center;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.lockbox{width:100%;max-width:320px;display:grid;gap:10px}
+.lockt{margin:0;font-family:var(--display);font-weight:800;font-size:44px}
+.lockbox button{font-family:var(--ui);font-weight:700;font-size:17px;border:0;border-radius:10px;padding:12px;background:var(--accent);color:#fff;cursor:pointer}
+.lockerr{margin:0;color:var(--hot);font-weight:600}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:999px;font-family:var(--ui);font-weight:600;z-index:30}
 @media (max-width:380px){.row{grid-template-columns:minmax(0,1fr) 80px 80px}.cell .t{font-size:17px}}
 @media (prefers-reduced-motion:no-preference){.cell.open,.cell.alive{animation:pulse 2s ease-in-out infinite}@keyframes pulse{50%{filter:brightness(1.08)}}}
@@ -175,7 +180,17 @@ input[type=time]{width:120px}
 
 </head>
 <body>
-<div class="wrap">
+<div id="lock" class="lock">
+  <form class="lockbox" id="lockform">
+    <h1 class="lockt">Karos</h1>
+    <p class="note" style="margin:0">Esta bitácora es privada.</p>
+    <label class="label" for="lockpw">Contraseña</label>
+    <input type="password" id="lockpw" autocomplete="current-password" autofocus>
+    <button type="submit">Entrar</button>
+    <p class="lockerr" id="lockerr" hidden>Contraseña incorrecta.</p>
+  </form>
+</div>
+<div class="wrap" id="app" hidden>
   <header>
     <div class="brand"><h1>Karos<span>bitácora</span></h1><div class="clock" id="clock">--:--</div></div>
     <div class="tabs" role="tablist">
@@ -515,7 +530,13 @@ function renderMaps(){
 }
 function renderAll(){paintMute();renderMaps();renderBosses();renderPrices();drawSheet();checkAlerts()}
 function tick(){$('#clock').textContent=new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});renderBosses();checkAlerts()}
-setInterval(tick,1000);boot();tick();
+const LOCK_HASH='70a0ae12ea6a3f0dde0343f5c999697edf76a1014150df2b3fa79c67ed969094';
+async function sha(t){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function unlock(){$('#lock').hidden=true;$('#app').hidden=false;setInterval(tick,1000);boot();tick()}
+(function(){let ok=false;try{ok=localStorage.getItem('karos-unlock')===LOCK_HASH}catch(e){}
+  if(ok){unlock();return}
+  $('#lockform').addEventListener('submit',async e=>{e.preventDefault();const h=await sha('karos:'+$('#lockpw').value);
+    if(h===LOCK_HASH){try{localStorage.setItem('karos-unlock',h)}catch(e){}unlock()}else{$('#lockerr').hidden=false;$('#lockpw').select()}})})();
 </script>
 </body>
 </html>
