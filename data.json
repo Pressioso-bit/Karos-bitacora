@@ -1073,6 +1073,15 @@
    "kind": "spawn",
    "at": 1793912880000,
    "src": "claude"
+  },
+  {
+   "id": "c-1105-1930s-v2",
+   "boss": "volcano",
+   "map": "lupinel",
+   "ch": 2,
+   "kind": "spawn",
+   "at": 1793917800000,
+   "src": "claude"
   }
  ],
  "prices": [
