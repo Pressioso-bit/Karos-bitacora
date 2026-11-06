@@ -1139,6 +1139,15 @@
    "at": 1793920680000,
    "src": "claude",
    "note": "hada de los yetis"
+  },
+  {
+   "id": "c-1105-2106k-v2",
+   "boss": "volcano",
+   "map": "lupinel",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793923560000,
+   "src": "claude"
   }
  ],
  "prices": [
