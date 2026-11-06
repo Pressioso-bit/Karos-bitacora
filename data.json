@@ -1157,6 +1157,42 @@
    "kind": "kill",
    "at": 1793923800000,
    "src": "claude"
+  },
+  {
+   "id": "c-1105-2113k-sneekie1",
+   "boss": "sneekie",
+   "map": "lupinel",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793923980000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1105-2113k-sneekie2",
+   "boss": "sneekie",
+   "map": "lupinel",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793923980000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1105-2113k-osobuho1",
+   "boss": "osobuho",
+   "map": "berneo",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793923980000,
+   "src": "claude"
+  },
+  {
+   "id": "c-1105-2113k-osobuho2",
+   "boss": "osobuho",
+   "map": "berneo",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793923980000,
+   "src": "claude"
   }
  ],
  "prices": [
