@@ -1193,6 +1193,15 @@
    "kind": "kill",
    "at": 1793923980000,
    "src": "claude"
+  },
+  {
+   "id": "c-1105-2133k-r2",
+   "boss": "reina",
+   "map": "tempteroon",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793925180000,
+   "src": "claude"
   }
  ],
  "prices": [
