@@ -1256,6 +1256,25 @@
    "kind": "spawn",
    "at": 1793930100000,
    "src": "claude"
+  },
+  {
+   "id": "c-1105-2302k-r2",
+   "boss": "reina",
+   "map": "tempteroon",
+   "ch": 2,
+   "kind": "kill",
+   "at": 1793930520000,
+   "src": "claude",
+   "note": "dicho como 'reina 1', asumido canal 2 por la ventana"
+  },
+  {
+   "id": "c-1106-0015k-r1",
+   "boss": "reina",
+   "map": "tempteroon",
+   "ch": 1,
+   "kind": "kill",
+   "at": 1793934900000,
+   "src": "claude"
   }
  ],
  "prices": [
